@@ -5,9 +5,17 @@ import secrets
 from datetime import datetime, timedelta, timezone
 
 from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-from app.models import Activity, Attendance, AttendanceSession, ESTADO_PUBLICADA
+from app.models import (
+    Activity,
+    Attendance,
+    AttendanceSession,
+    ESTADO_PUBLICADA,
+    ROLE_ESTUDIANTE,
+    User,
+)
 from app.services.enrollment import is_enrolled
 
 TOKEN_TTL_SECONDS = 90
@@ -99,7 +107,12 @@ def check_in(db: Session, token: str, user_id: int) -> Activity:
             validated_by=sess.created_by,
         )
     )
-    db.commit()
+    try:
+        db.commit()
+    except IntegrityError:
+        # Concurrent double-scan: the unique constraint already recorded it.
+        db.rollback()
+        raise AttendanceError("Tu asistencia ya fue registrada.")
     return db.get(Activity, sess.activity_id)
 
 
@@ -109,7 +122,16 @@ def present_user_ids(db: Session, activity_id: int) -> set[int]:
 
 
 def mark_present_manual(db: Session, activity_id: int, user_id: int, validated_by: int) -> None:
-    """Admin/docente manual override (E-09 supervision)."""
+    """Admin/docente manual override (E-09 supervision).
+
+    Mirrors the guards in check_in(): the target must be a real student enrolled
+    in the activity, so attendance/credits cannot be fabricated for arbitrary ids.
+    """
+    target = db.get(User, user_id)
+    if target is None or target.role != ROLE_ESTUDIANTE:
+        raise AttendanceError("El usuario indicado no es un estudiante válido.")
+    if not is_enrolled(db, activity_id, user_id):
+        raise AttendanceError("El estudiante no está inscripto en esta actividad.")
     exists = (
         db.query(Attendance)
         .filter(Attendance.activity_id == activity_id, Attendance.user_id == user_id)
@@ -118,4 +140,7 @@ def mark_present_manual(db: Session, activity_id: int, user_id: int, validated_b
     if exists:
         return
     db.add(Attendance(activity_id=activity_id, user_id=user_id, validated_by=validated_by))
-    db.commit()
+    try:
+        db.commit()
+    except IntegrityError:
+        db.rollback()

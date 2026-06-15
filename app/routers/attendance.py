@@ -8,6 +8,7 @@ from datetime import datetime, timezone
 import qrcode
 from fastapi import APIRouter, Depends, Form, Request
 from fastapi.responses import JSONResponse, RedirectResponse
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app.database import get_db
@@ -108,12 +109,28 @@ def survey_submit(
         .filter(SurveyResponse.activity_id == activity_id, SurveyResponse.user_id == user.id)
         .first()
     )
+    rating = max(1, min(5, rating))
+    comment_val = comment.strip() or None
     if existing:
-        existing.rating = max(1, min(5, rating))
-        existing.comment = comment.strip() or None
+        existing.rating = rating
+        existing.comment = comment_val
+        db.commit()
     else:
-        db.add(SurveyResponse(activity_id=activity_id, user_id=user.id, rating=max(1, min(5, rating)), comment=comment.strip() or None))
-    db.commit()
+        db.add(SurveyResponse(activity_id=activity_id, user_id=user.id, rating=rating, comment=comment_val))
+        try:
+            db.commit()
+        except IntegrityError:
+            # Concurrent double-submit: a row was inserted between our check and commit.
+            db.rollback()
+            row = (
+                db.query(SurveyResponse)
+                .filter(SurveyResponse.activity_id == activity_id, SurveyResponse.user_id == user.id)
+                .first()
+            )
+            if row:
+                row.rating = rating
+                row.comment = comment_val
+                db.commit()
     return RedirectResponse(url="/home?msg=¡Gracias por tu opinión!", status_code=303)
 
 
@@ -176,5 +193,8 @@ def docente_mark(
     activity = db.get(Activity, activity_id)
     if activity is None or not _can_manage(activity, user):
         return RedirectResponse(url="/docente?err=Actividad no encontrada.", status_code=303)
-    attendance_svc.mark_present_manual(db, activity_id, student_id, user.id)
+    try:
+        attendance_svc.mark_present_manual(db, activity_id, student_id, user.id)
+    except attendance_svc.AttendanceError as exc:
+        return RedirectResponse(url=f"/docente/actividades/{activity_id}/asistencia?err={exc}", status_code=303)
     return RedirectResponse(url=f"/docente/actividades/{activity_id}/asistencia?msg=Asistencia registrada.", status_code=303)

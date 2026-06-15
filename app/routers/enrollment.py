@@ -34,12 +34,17 @@ def inscribir(
         activity = enrollment_svc.enroll(db, activity_id, user.id)
     except enrollment_svc.EnrollError as exc:
         return RedirectResponse(url=f"/actividades/{activity_id}?err={exc}", status_code=303)
-    notify(
-        db, user,
-        f"Inscripción confirmada: '{activity.titulo}' el {activity.fecha_inicio.strftime('%d/%m/%Y %H:%M')} en {activity.lugar or 'el campus'}.",
-        email_subject="Confirmación de inscripción",
-    )
-    db.commit()
+    # Enrollment is already durably committed by enroll(); the confirmation
+    # notification is best-effort and must not fail the (successful) inscription.
+    try:
+        notify(
+            db, user,
+            f"Inscripción confirmada: '{activity.titulo}' el {activity.fecha_inicio.strftime('%d/%m/%Y %H:%M')} en {activity.lugar or 'el campus'}.",
+            email_subject="Confirmación de inscripción",
+        )
+        db.commit()
+    except Exception:  # noqa: BLE001
+        db.rollback()
     return RedirectResponse(url=f"/actividades/{activity_id}?msg=¡Inscripción confirmada! Te enviamos un mail.", status_code=303)
 
 

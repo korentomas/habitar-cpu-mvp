@@ -6,6 +6,7 @@ import io
 import pandas as pd
 from fastapi import APIRouter, Depends, File, Request, UploadFile
 from fastapi.responses import RedirectResponse, Response
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app.database import get_db
@@ -107,15 +108,24 @@ async def legajos_import(
         return RedirectResponse(url="/admin/legajos?err=El archivo debe tener una columna 'legajo'.", status_code=303)
 
     added = 0
+    seen: set[str] = set()  # dedupe within the file (autoflush=False -> db.get won't see pending inserts)
     for _, row in df.iterrows():
         legajo = str(row[cols["legajo"]]).strip()
         if not legajo or legajo.lower() == "nan":
             continue
         if "." in legajo:  # pandas may read ints as floats
             legajo = legajo.split(".")[0]
+        if legajo in seen:
+            continue
+        seen.add(legajo)
         nombre = str(row[cols["nombre"]]).strip() if "nombre" in cols else None
         if db.get(ValidLegajo, legajo) is None:
             db.add(ValidLegajo(legajo=legajo, nombre=nombre))
             added += 1
-    db.commit()
+    try:
+        db.commit()
+    except IntegrityError:
+        # Concurrent import added an overlapping legajo; nothing is corrupted.
+        db.rollback()
+        return RedirectResponse(url="/admin/legajos?err=Algunos legajos ya existían. Reintentá.", status_code=303)
     return RedirectResponse(url=f"/admin/legajos?msg=Importados {added} legajos nuevos.", status_code=303)

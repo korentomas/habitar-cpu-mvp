@@ -122,13 +122,17 @@ def actualizar(
         creditos=creditos, cupo_max=cupo_max,
     )
     if was_published:
-        for enr in enrollment_svc.inscriptos(db, activity_id):
-            notify(
-                db, enr.user,
-                f"La actividad '{a.titulo}' fue actualizada. Revisá los nuevos datos (fecha {a.fecha_inicio.strftime('%d/%m/%Y %H:%M')}).",
-                email_subject="Cambios en una actividad inscripta",
-            )
-        db.commit()
+        # Best-effort notifications; the activity update is already committed.
+        try:
+            for enr in enrollment_svc.inscriptos(db, activity_id):
+                notify(
+                    db, enr.user,
+                    f"La actividad '{a.titulo}' fue actualizada. Revisá los nuevos datos (fecha {a.fecha_inicio.strftime('%d/%m/%Y %H:%M')}).",
+                    email_subject="Cambios en una actividad inscripta",
+                )
+            db.commit()
+        except Exception:  # noqa: BLE001
+            db.rollback()
     return RedirectResponse(url="/admin?msg=Actividad actualizada.", status_code=303)
 
 

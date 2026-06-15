@@ -7,6 +7,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
 from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
+from sqlalchemy.exc import IntegrityError
 from starlette.middleware.sessions import SessionMiddleware
 
 from app.config import settings
@@ -47,7 +48,13 @@ async def lifespan(_app: FastAPI):
 
 
 app = FastAPI(title=settings.APP_NAME, lifespan=lifespan)
-app.add_middleware(SessionMiddleware, secret_key=settings.SECRET_KEY, max_age=60 * 60 * 24 * 7)
+app.add_middleware(
+    SessionMiddleware,
+    secret_key=settings.SECRET_KEY,
+    max_age=60 * 60 * 24 * 7,
+    same_site="lax",
+    https_only=settings.SESSION_HTTPS_ONLY,
+)
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 
@@ -60,6 +67,13 @@ async def _not_authenticated(request: Request, _exc: NotAuthenticated):
 @app.exception_handler(NotAuthorized)
 async def _not_authorized(request: Request, _exc: NotAuthorized):
     return render(request, "errors/403.html", status_code=403)
+
+
+@app.exception_handler(IntegrityError)
+async def _integrity_error(request: Request, _exc: IntegrityError):
+    # Backstop: per-route handlers catch the expected conflicts; this prevents
+    # any uncaught constraint violation from leaking a raw 500 traceback.
+    return render(request, "errors/500.html", status_code=500)
 
 
 # ---- Routers ----------------------------------------------------------------

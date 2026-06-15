@@ -51,12 +51,15 @@ def send_reminders() -> None:
                     f"Recordatorio: '{activity.titulo}' comienza el "
                     f"{activity.fecha_inicio.strftime('%d/%m/%Y %H:%M')} en {activity.lugar or 'el campus'}."
                 )
+                # Persist the reminded flag + notification BEFORE the email side
+                # effect, and commit per-enrollment, so a later DB failure can never
+                # un-send an already-delivered reminder (no double-send).
+                enr.reminded = True
                 db.add(Notification(user_id=enr.user_id, mensaje=msg))
+                db.commit()
                 if enr.user and enr.user.email:
                     send_email(enr.user.email, "Recordatorio de actividad", msg)
-                enr.reminded = True
                 sent += 1
-        db.commit()
         if sent:
             logger.info("Sent %d activity reminders", sent)
     except Exception as exc:  # noqa: BLE001

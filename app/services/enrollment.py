@@ -81,7 +81,11 @@ def my_activities(db: Session, user_id: int) -> list[Activity]:
     rows = (
         db.query(Activity)
         .join(Enrollment, Enrollment.activity_id == Activity.id)
-        .filter(Enrollment.user_id == user_id, Enrollment.estado == ENROLL_INSCRIPTO)
+        .filter(
+            Enrollment.user_id == user_id,
+            Enrollment.estado == ENROLL_INSCRIPTO,
+            Activity.estado == ESTADO_PUBLICADA,
+        )
         .order_by(Activity.fecha_inicio.asc())
         .all()
     )
