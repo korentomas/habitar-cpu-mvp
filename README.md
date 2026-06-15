@@ -6,6 +6,17 @@ Plataforma web que centraliza la gestión del Módulo Habitar del CPU: reemplaza
 manual (Google Forms + planillas de papel + revisión de fotos) por inscripción digital,
 acreditación de asistencia por **código QR** y seguimiento de créditos.
 
+## Demo en vivo
+
+> **https://habitar-cpu.onrender.com**
+
+Guía completa de acceso y testeo: [`docs/Instrucciones_Demo_y_QC.md`](docs/Instrucciones_Demo_y_QC.md).
+Primer acceso: el plan gratuito hiberna; puede demorar ~30–50 s en reactivarse.
+
+Cuentas de prueba (contraseña `habitar123`): `ana@alumno.unsam.edu.ar` (estudiante),
+`coordinacion@unsam.edu.ar`, `docente@unsam.edu.ar`, `director@unsam.edu.ar`.
+Alta de estudiante nuevo: usar un legajo del padrón demo (`1003`–`1008`, `2001`, `2002`).
+
 ## Stack
 - **Backend:** FastAPI + SQLAlchemy 2 + Jinja2 (Python 3.13)
 - **DB:** PostgreSQL (Neon)
