@@ -46,7 +46,8 @@
   {% if not historial %}
     <p class="text-slate-500 text-sm">Todavía no registraste asistencia a ninguna actividad.</p>
   {% else %}
-    <table class="w-full text-sm">
+    <div class="overflow-x-auto">
+    <table class="w-full text-sm min-w-[420px]">
       <thead><tr class="text-left text-slate-400 border-b"><th class="py-2">Actividad</th><th>Créditos</th><th>Fecha</th></tr></thead>
       <tbody>
       {% for a, when in historial %}
@@ -54,6 +55,7 @@
       {% endfor %}
       </tbody>
     </table>
+    </div>
   {% endif %}
 </div>
 {% endblock %}

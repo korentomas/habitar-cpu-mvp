@@ -27,7 +27,8 @@
   {% if not surveys %}
     <p class="text-slate-500 text-sm">Todavía no hay respuestas de encuestas.</p>
   {% else %}
-  <table class="w-full text-sm">
+  <div class="overflow-x-auto">
+  <table class="w-full text-sm min-w-[420px]">
     <thead class="text-left text-slate-400 border-b"><tr><th class="py-2">Actividad</th><th>Promedio</th><th>Respuestas</th></tr></thead>
     <tbody>
     {% for s in surveys %}
@@ -35,6 +36,7 @@
     {% endfor %}
     </tbody>
   </table>
+  </div>
   {% endif %}
 </div>
 {% endblock %}
