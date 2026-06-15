@@ -1,191 +1,179 @@
 # Plataforma de Gestión del Módulo Habitar (CPU - UNSAM)
-## Instrucciones de Acceso a la Demo y Manual de Testeo / QC
+## Instrucciones de acceso a la demo y manual de testeo
 
-**Grupo 10**, Julián Fraga, Martín Groisman, Tomás Korenblit, Marcelo Velizán
-Trabajo Práctico Final Integrador, Ingeniería de Software, 1C 2026
+**Grupo 10.** Julián Fraga, Martín Groisman, Tomás Korenblit, Marcelo Velizán.
+Trabajo Práctico Final Integrador, Ingeniería de Software, 1C 2026.
 
 ---
 
 ## 1. Acceso a la demo
 
-La demo del MVP se encuentra desplegada y disponible públicamente en:
+La demo del MVP se encuentra desplegada y disponible de forma pública en la siguiente
+dirección:
 
 > **https://habitar-cpu.onrender.com**
 
-**Nota sobre el primer acceso:** el entorno está alojado en un plan gratuito que
-hiberna el servicio tras un período de inactividad. La primera carga puede demorar
-**entre 30 y 50 segundos** mientras el servicio se reactiva; las siguientes son
-inmediatas. Si la pantalla queda en blanco, basta con esperar y refrescar una vez.
+El entorno está alojado en un plan gratuito que suspende el servicio cuando permanece
+inactivo durante un tiempo. Por ese motivo, la primera carga puede demorar entre treinta
+y cincuenta segundos mientras el servicio se reactiva, y las siguientes resultan
+inmediatas. Si la pantalla permanece en blanco, es suficiente con esperar unos segundos y
+actualizar la página una vez. La plataforma redirige automáticamente a la pantalla de
+ingreso y no requiere
+ninguna instalación ni configuración por parte del evaluador.
 
-La plataforma redirige automáticamente a la pantalla de ingreso. No requiere
-instalación ni configuración por parte del evaluador.
+### 1.1. Cuentas de prueba
 
-### 1.1. Cuentas de prueba (precargadas)
+Todas las cuentas comparten la contraseña **`habitar123`**, y cada una accede al panel que
+corresponde a su rol.
 
-Todas las cuentas usan la contraseña **`habitar123`**.
-
-| Rol | Usuario (email) | Qué puede hacer |
+| Rol | Usuario (email) | Alcance dentro de la plataforma |
 |---|---|---|
-| Estudiante | `ana@alumno.unsam.edu.ar` | Descubrir actividades, inscribirse, registrar asistencia, ver progreso |
-| Coordinación (administración) | `coordinacion@unsam.edu.ar` | Gestionar actividades, inscriptos, asistencia, importar/exportar, analítica |
-| Docente / facilitador | `docente@unsam.edu.ar` | Tomar asistencia de sus actividades (código QR) |
-| Director de carrera | `director@unsam.edu.ar` | Consultar la analítica (solo lectura) |
+| Estudiante | `ana@alumno.unsam.edu.ar` | Descubrir actividades, inscribirse, registrar asistencia y seguir su progreso |
+| Coordinación (administración) | `coordinacion@unsam.edu.ar` | Gestionar actividades, inscriptos y asistencia, importar y exportar datos, ver analítica |
+| Docente o facilitador | `docente@unsam.edu.ar` | Tomar la asistencia de sus actividades mediante el código de acreditación |
+| Director de carrera | `director@unsam.edu.ar` | Consultar la analítica en modo de solo lectura |
 
-> La cuenta `ana@alumno.unsam.edu.ar` ya tiene actividades inscriptas, una asistencia
-> acreditada y créditos acumulados, de modo que las pantallas de progreso e historial
-> muestran datos desde el primer momento.
+La cuenta `ana@alumno.unsam.edu.ar` ya tiene actividades inscriptas, una asistencia
+acreditada y créditos acumulados, de modo que las pantallas de progreso e historial
+muestran datos desde el primer acceso.
 
-### 1.2. Alta de un estudiante nuevo (verificación SIU simulada)
+### 1.2. Alta de un estudiante nuevo
 
-El alta de estudiantes valida la matrícula contra el padrón de la UNSAM (SIU Guaraní).
-En el MVP esa verificación está **simulada** con un padrón cargado. Para registrar una
-cuenta nueva desde *“Creá tu cuenta”*, utilice uno de los siguientes legajos válidos:
-
-> **1003, 1004, 1005, 1006, 1007, 1008, 2001, 2002**
-
-Un legajo fuera de ese conjunto (por ejemplo `9999`) es rechazado con el mensaje
-*“El legajo no figura en el padrón UNSAM (SIU Guaraní)”*, demostrando el control de identidad.
+El alta de estudiantes valida la matrícula contra el padrón de la UNSAM (SIU Guaraní). En
+este MVP esa verificación se encuentra simulada mediante un padrón cargado en el sistema.
+Para registrar una cuenta nueva desde la opción *Creá tu cuenta*, el evaluador puede
+utilizar cualquiera de los legajos habilitados: 1003, 1004, 1005, 1006, 1007, 1008, 2001 o
+2002. Un legajo que no figure en ese conjunto, por ejemplo el 9999, es rechazado con el
+mensaje *El legajo no figura en el padrón UNSAM (SIU Guaraní)*, lo que evidencia el control
+de identidad sobre el alta.
 
 ### 1.3. Datos precargados
 
-El sistema inicializa, de forma idempotente, un conjunto de datos de demostración:
-
-- Padrón de legajos válidos y las cuatro cuentas de rol descritas arriba.
-- Actividades de ejemplo en distintos estados y fechas:
-  - *Bienvenida al campus* (presencial, pasada, 2 créditos), con asistencia ya acreditada.
-  - *Taller de hábitos de estudio* (presencial, dentro de 24 h, 3 créditos, **cupo 2** para evidenciar el control de cupos).
-  - *Charla: vida universitaria* (virtual, 2 créditos).
-  - *Laboratorio abierto de Física* (presencial, 4 créditos).
-  - *Taller de escritura* en estado **borrador** (no visible para estudiantes).
-- Preguntas frecuentes y el umbral de aprobación del módulo (**10 créditos**).
+Al iniciarse, el sistema carga de forma idempotente un conjunto de datos de
+demostración que permite recorrer la plataforma sin preparación previa. Ese conjunto
+incluye el padrón de legajos válidos, las cuatro cuentas de rol descritas más arriba, una
+serie de actividades de ejemplo en distintos estados y fechas, las preguntas frecuentes y
+el umbral de aprobación del módulo, fijado en diez créditos. Entre las actividades se
+destaca el *Taller de hábitos de estudio*, que tiene un cupo de solo dos lugares para
+permitir reproducir el control de cupos, y la *Bienvenida al campus*, que ya cuenta con una
+asistencia acreditada.
 
 ---
 
-## 2. Recorridos sugeridos (camino feliz)
+## 2. Recorridos sugeridos
 
-Los siguientes recorridos reproducen los flujos descritos en el whitepaper
-(sección 8.8). Se recomienda ejecutarlos en este orden.
+Los recorridos que siguen reproducen los flujos descritos en el whitepaper (sección 8.8) y
+conviene ejecutarlos en el orden propuesto.
 
-### 2.1. Estudiante (autoservicio)
-1. Ingresar con `ana@alumno.unsam.edu.ar`.
-2. En **Inicio** observar la barra de progreso, *“Mis próximas actividades”* y el historial.
-3. Ir a **Actividades**, aplicar filtros (tipo, fecha, créditos, con cupo) y abrir el detalle de una actividad.
-4. Presionar **Inscribirme**: el sistema confirma la inscripción y genera una notificación.
-5. Ir a **Registrar asistencia** (ver sección 2.3 para obtener el código del docente),
-   ingresar el código de 6 dígitos y validar.
-6. Completar (opcionalmente) la **encuesta** de satisfacción.
-7. Volver a **Inicio** y verificar que los créditos y el progreso se actualizaron.
+**Estudiante.** El estudiante ingresa con la cuenta `ana@alumno.unsam.edu.ar` y observa en
+el inicio su barra de progreso, la sección de próximas actividades y el historial de las ya
+completadas. A continuación abre el listado de actividades, aplica los filtros por tipo,
+fecha, créditos y cupo, y entra al detalle de una actividad para inscribirse con un click.
+Una vez en la actividad registra su asistencia ingresando el código de seis dígitos que
+muestra el docente (sección 2, recorrido del docente), responde de manera opcional la
+encuesta de satisfacción y regresa al inicio, donde verifica que los créditos y el progreso
+se actualizaron.
 
-### 2.2. Coordinación (backoffice)
-1. Ingresar con `coordinacion@unsam.edu.ar`.
-2. En el **Panel** revisar el resumen en tarjetas (publicadas, borradores, inscripciones).
-3. **+ Nueva actividad** → completar datos → **Guardar** (queda en borrador) → **Vista previa** → **Publicar**.
-4. **Inscriptos** → seleccionar una actividad → revisar la lista, validar asistencia y **exportar a CSV / Excel**.
-5. **Inscriptos → Importar padrón de legajos**: subir un archivo `.csv`/`.xlsx` con la columna `legajo`.
-6. **Analítica** → revisar métricas y gráficos de cohorte.
-7. **FAQ** → administrar las preguntas frecuentes.
+**Coordinación.** La coordinación ingresa con `coordinacion@unsam.edu.ar` y parte del panel,
+donde encuentra el resumen de actividades publicadas, borradores e inscripciones. Desde
+allí crea una actividad nueva, la revisa con la vista previa y la publica para que sea
+visible a los estudiantes. Luego abre el listado de inscriptos de una actividad, valida la
+asistencia y exporta la nómina a CSV o a Excel. Por último consulta la analítica del módulo
+y administra las preguntas frecuentes.
 
-### 2.3. Docente (acreditación de asistencia)
-1. Ingresar con `docente@unsam.edu.ar`.
-2. En **Mis actividades** elegir una y presionar **Tomar asistencia**.
-3. Se muestra un **código QR rotativo + un código de 6 dígitos** (se renueva cada 90 segundos).
-4. El estudiante escanea el QR o ingresa el código en su portal (sección 2.1, paso 5).
-5. Alternativamente, el docente puede marcar la asistencia manualmente desde la lista de inscriptos.
+**Docente.** El docente ingresa con `docente@unsam.edu.ar`, elige una de sus actividades y
+abre la pantalla de asistencia. La plataforma muestra un código QR y un código de seis
+dígitos que se renueva cada noventa segundos; el estudiante lo escanea o lo ingresa en su
+portal para acreditar su presencia. De manera alternativa, el docente puede marcar la
+asistencia manualmente desde la lista de inscriptos.
 
-### 2.4. Director de carrera
-1. Ingresar con `director@unsam.edu.ar`.
-2. Acceder a **Analítica** (solo lectura). El director no puede crear ni modificar actividades.
+**Director de carrera.** El director ingresa con `director@unsam.edu.ar` y accede a la
+analítica en modo de solo lectura. No dispone de opciones para crear ni modificar
+actividades.
 
 ---
 
-## 3. Manual de Testeo / QC
+## 3. Manual de testeo
 
-Casos de prueba de aceptación organizados por épica (alineados con las secciones 8.6
-y 8.7 del whitepaper). Cada caso indica **precondición → pasos → resultado esperado**.
+Este manual acompaña la evaluación de la demo y describe, épica por épica, qué
+comportamiento se espera observar y con qué datos reproducirlo. Su propósito es que el
+evaluador pueda confirmar, sin asistencia del equipo, que cada requisito funcional y cada
+atributo de calidad definido en el whitepaper se cumple en el entorno desplegado. La
+organización por épicas sigue la del whitepaper (secciones 8.6 y 8.7).
 
-### E-01. Autenticación y perfil
-| ID | Caso | Pasos | Resultado esperado |
-|---|---|---|---|
-| T-01 | Login válido | Ingresar con una cuenta de prueba | Acceso al panel correspondiente al rol |
-| T-02 | Login inválido | Contraseña incorrecta | Mensaje *“Email o contraseña incorrectos”* |
-| T-03 | Alta con legajo válido | Registrarse con legajo 1003 | Cuenta creada e ingreso automático |
-| T-04 | Alta con legajo inválido | Registrarse con legajo 9999 | Rechazo: *“no figura en el padrón UNSAM”* |
-| T-05 | Control de acceso por rol | Como estudiante, abrir `/admin` | Pantalla **403 - Sin permiso** |
+**Épica 1, autenticación y perfil.** Se verifica que un estudiante con un legajo presente en
+el padrón, por ejemplo el 1003, puede registrarse e ingresar correctamente, que un legajo
+ausente como el 9999 es rechazado con un mensaje claro sin que se cree la cuenta, que la
+coordinación accede con su usuario al backoffice y que un director de carrera ingresa a una
+vista de analítica de solo lectura. El control de acceso por rol se comprueba intentando
+abrir una sección de administración con una cuenta de estudiante, ante lo cual el sistema
+responde con una pantalla de acceso denegado.
 
-### E-02. Descubrimiento y exploración
-| ID | Caso | Pasos | Resultado esperado |
-|---|---|---|---|
-| T-06 | Listado | Abrir **Actividades** | Se ven solo las actividades publicadas |
-| T-07 | Filtros | Filtrar por tipo / fecha / créditos / con cupo | El listado se reduce según el criterio |
-| T-08 | Detalle | Abrir una actividad | Se ven datos completos y el cupo disponible |
+**Épica 2, descubrimiento y exploración.** Se verifica que el listado muestra únicamente las
+actividades publicadas, que los filtros por fecha, tipo, créditos y cupo operan tanto de
+forma individual como combinada, y que el detalle de cada actividad es coherente con los
+datos cargados por la coordinación.
 
-### E-03. Inscripción y control de cupos
-| ID | Caso | Pasos | Resultado esperado |
-|---|---|---|---|
-| T-09 | Inscripción | Inscribirse en una actividad con cupo | Confirmación + notificación por mail/in-app |
-| T-10 | Baja | Darse de baja | Se libera el cupo |
-| T-11 | Cupo lleno | Inscribir un 3.er estudiante en *“Taller de hábitos de estudio”* (cupo 2) | Rechazo: *“No quedan cupos disponibles”* |
+**Épica 3, inscripción y control de cupos.** Se verifica el flujo de inscripción con un click
+y la recepción de la confirmación correspondiente. Como casos críticos, se comprueba que el
+sistema impide inscribirse en una actividad sin cupo, que detecta y rechaza una inscripción
+duplicada, y que ante dos inscripciones simultáneas por el último lugar solo una prospera.
+La actividad *Taller de hábitos de estudio*, con un cupo de dos lugares, permite reproducir
+ese límite.
 
-### E-04. Recordatorios y seguimiento
-| ID | Caso | Pasos | Resultado esperado |
-|---|---|---|---|
-| T-12 | Próximas actividades | Inicio del estudiante | Sección *“Mis próximas actividades”* poblada |
-| T-13 | FAQ | Abrir **Ayuda** | Se ven las preguntas frecuentes |
-| T-14 | Recordatorio 24 h | (Automático) | El sistema agenda el envío 24 h antes del inicio |
+**Épica 4, recordatorios y seguimiento.** Se verifica que la sección *Mis próximas
+actividades* refleja las inscripciones vigentes del estudiante, que el recordatorio por
+correo queda agendado para las veinticuatro horas previas al inicio de la actividad, y que
+la sección de preguntas frecuentes muestra el contenido administrado por la coordinación.
 
-### E-05. Registro de asistencia con QR
-| ID | Caso | Pasos | Resultado esperado |
-|---|---|---|---|
-| T-15 | Acreditación | Docente abre asistencia → estudiante ingresa el código | *“¡Asistencia registrada!”* + suma de créditos |
-| T-16 | Código vencido | Ingresar un código viejo (> 90 s) | Rechazo: *“El código expiró”* |
-| T-17 | No inscripto | Acreditar a un estudiante no inscripto | Rechazo: *“No estás inscripto en esta actividad”* |
-| T-18 | Doble acreditación | Validar dos veces | Rechazo: *“Tu asistencia ya fue registrada”* |
+**Épica 5, registro de asistencia.** Se prueba el flujo de acreditación presencial: la
+persona a cargo de la actividad muestra un código que se renueva cada noventa segundos y el
+estudiante lo ingresa desde su portal. Se verifica que un código vencido es rechazado, que
+un estudiante no inscripto no puede acreditar su asistencia, y que un segundo intento de
+acreditación sobre la misma actividad es bloqueado por el sistema.
 
-### E-06. Encuesta de satisfacción
-| ID | Caso | Pasos | Resultado esperado |
-|---|---|---|---|
-| T-19 | Encuesta | Tras acreditar, responder la encuesta | Respuesta guardada y asociada a la actividad |
+**Épica 6, encuesta de satisfacción.** Se verifica que la encuesta se ofrece al estudiante
+inmediatamente después de acreditar su asistencia y que la respuesta queda asociada tanto a
+la actividad como al estudiante.
 
-### E-07. Progreso del estudiante
-| ID | Caso | Pasos | Resultado esperado |
-|---|---|---|---|
-| T-20 | Créditos y barra | Inicio del estudiante | Créditos acumulados y barra de progreso correctos |
-| T-21 | Historial | Inicio del estudiante | Listado de actividades completadas |
+**Épica 7, progreso del estudiante.** Se verifica que los créditos acumulados son correctos
+y coherentes con el historial de actividades completadas, y que la barra de progreso refleja
+el avance real respecto del umbral de aprobación del módulo.
 
-### E-08. Gestión de actividades (administración)
-| ID | Caso | Pasos | Resultado esperado |
-|---|---|---|---|
-| T-22 | Alta | Crear una actividad | Queda en estado borrador |
-| T-23 | Vista previa | Vista previa antes de publicar | Se ve como la verá el estudiante |
-| T-24 | Publicación | Publicar | La actividad pasa a ser visible para estudiantes |
-| T-25 | Edición + aviso | Editar una actividad publicada con inscriptos | Se notifica automáticamente a los inscriptos |
+**Épica 8, gestión de actividades.** Se verifica el flujo completo de creación, vista previa,
+publicación y edición de una actividad. Un caso particular consiste en editar una actividad
+ya publicada que tiene inscriptos y comprobar que el sistema notifica el cambio a cada uno
+de ellos.
 
-### E-09. Inscriptos y asistencia (administración)
-| ID | Caso | Pasos | Resultado esperado |
-|---|---|---|---|
-| T-26 | Listado de inscriptos | Abrir **Inscriptos** de una actividad | Lista con estado de asistencia |
-| T-27 | Exportación | Exportar a CSV y a Excel | Se descargan los archivos con los inscriptos |
-| T-28 | Importación | Importar un CSV/XLSX con columna `legajo` | Se incorporan los legajos nuevos al padrón |
+**Épica 9, gestión de inscriptos y asistencia.** Se verifica que el listado de inscriptos por
+actividad es correcto, que cada validación de asistencia queda registrada con su
+responsable, y que la exportación a CSV y a Excel y la importación del padrón de legajos
+funcionan sobre archivos válidos.
 
-### E-10. Analítica y reportes
-| ID | Caso | Pasos | Resultado esperado |
-|---|---|---|---|
-| T-29 | Dashboard | Abrir **Analítica** (coordinación o director) | Tarjetas + gráficos (inscriptos vs. asistencias, más elegidas) y promedios de encuesta |
-| T-30 | Solo lectura | Como director, intentar gestionar actividades | No tiene acceso a la edición |
+**Épica 10, analítica y reportes.** Se verifica que las métricas y los gráficos del tablero
+son coherentes con los datos de la base, y que el director de carrera accede a esa
+información en modo de solo lectura.
 
 ### 3.1. Criterios de aceptación
-Se considera la prueba **superada** cuando todos los casos T-01 a T-30 arrojan el
-resultado esperado, sin errores no controlados (pantallas 403/500 solo en los casos previstos).
+
+Se considera que la demo supera la evaluación cuando cada uno de los comportamientos
+descritos se reproduce en el entorno desplegado y los únicos errores observados son los
+previstos, es decir, los rechazos de validación y la pantalla de acceso denegado para los
+roles sin permiso. Cualquier error no controlado, como una página de error inesperada, se
+considera un defecto a corregir.
 
 ---
 
 ## 4. Notas técnicas y alcance del MVP
 
-- **Stack:** FastAPI + SQLAlchemy + Jinja2 sobre PostgreSQL (Neon), desplegado con Docker.
-- **Decisiones del MVP** (documentadas en el whitepaper): la verificación SIU Guaraní está
-  simulada con un padrón cargado; las notificaciones se resuelven in-app + mail (sin broker
-  Redis); los gráficos se renderizan con Chart.js; el envío de mails usa una *backend de consola*
-  si no hay SMTP configurado (los recordatorios y confirmaciones se registran en el log del servidor).
-- **Código fuente:** el repositorio incluye el `README.md`, el documento de diseño y este manual.
+La demo está construida con FastAPI, SQLAlchemy y Jinja2 sobre una base de datos PostgreSQL
+(Neon), y se despliega como una imagen Docker. Las decisiones de alcance se documentan en el
+whitepaper: la verificación contra el SIU Guaraní está simulada mediante un padrón cargado;
+las notificaciones se resuelven dentro de la aplicación y por correo, sin un broker
+intermedio; y los gráficos se generan con Chart.js. Cuando no hay un servidor de correo
+configurado, el envío de mensajes utiliza una salida de consola, de modo que los
+recordatorios y las confirmaciones quedan registrados en el log del servidor en lugar de
+enviarse. El código fuente, junto con el documento de diseño y este manual, se encuentra en
+el repositorio del proyecto.
 
 Quedamos a disposición para cualquier consulta durante la evaluación.
