@@ -14,11 +14,13 @@
 <div class="grid md:grid-cols-2 gap-6 mb-6">
   <div class="bg-white rounded-2xl shadow p-5">
     <h2 class="font-semibold mb-3">Inscriptos vs. asistencias</h2>
-    <canvas id="chartAttendance" height="220"></canvas>
+    {% if per_activity %}<canvas id="chartAttendance" height="220"></canvas>
+    {% else %}<p class="text-slate-500 text-sm">Sin actividades con inscriptos todavía.</p>{% endif %}
   </div>
   <div class="bg-white rounded-2xl shadow p-5">
     <h2 class="font-semibold mb-3">Actividades más elegidas</h2>
-    <canvas id="chartTop" height="220"></canvas>
+    {% if top %}<canvas id="chartTop" height="220"></canvas>
+    {% else %}<p class="text-slate-500 text-sm">Sin inscripciones todavía.</p>{% endif %}
   </div>
 </div>
 
@@ -44,7 +46,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script>
   const perActivity = {{ per_activity|tojson }};
-  const top = {{ top|tojson }};
+  const topActivities = {{ top|tojson }};
 
   if (window.Chart && perActivity.length) {
     new Chart(document.getElementById('chartAttendance'), {
@@ -59,12 +61,12 @@
       options: { responsive: true, scales: { y: { beginAtZero: true } } },
     });
   }
-  if (window.Chart && top.length) {
+  if (window.Chart && topActivities.length) {
     new Chart(document.getElementById('chartTop'), {
       type: 'bar',
       data: {
-        labels: top.map(a => a.titulo),
-        datasets: [{ label: 'Inscriptos', data: top.map(a => a.inscriptos), backgroundColor: '#f59e0b' }],
+        labels: topActivities.map(a => a.titulo),
+        datasets: [{ label: 'Inscriptos', data: topActivities.map(a => a.inscriptos), backgroundColor: '#f59e0b' }],
       },
       options: { indexAxis: 'y', responsive: true, scales: { x: { beginAtZero: true } } },
     });

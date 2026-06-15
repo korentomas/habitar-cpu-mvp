@@ -41,14 +41,22 @@ def top_activities(db: Session, limit: int = 5) -> list[dict]:
 
 
 def attendance_per_activity(db: Session) -> list[dict]:
+    """Published activities that have at least one enrollment (skip empty/draft ones)."""
     result = []
-    activities = db.query(Activity).order_by(Activity.fecha_inicio.desc()).all()
+    activities = (
+        db.query(Activity)
+        .filter(Activity.estado == ESTADO_PUBLICADA)
+        .order_by(Activity.fecha_inicio.desc())
+        .all()
+    )
     for a in activities:
         insc = (
             db.query(Enrollment)
             .filter(Enrollment.activity_id == a.id, Enrollment.estado == ENROLL_INSCRIPTO)
             .count()
         )
+        if insc == 0:
+            continue
         asis = db.query(Attendance).filter(Attendance.activity_id == a.id).count()
         result.append(
             {
