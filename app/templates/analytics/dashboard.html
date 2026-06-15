@@ -31,7 +31,7 @@
     <thead class="text-left text-slate-400 border-b"><tr><th class="py-2">Actividad</th><th>Promedio</th><th>Respuestas</th></tr></thead>
     <tbody>
     {% for s in surveys %}
-      <tr class="border-b last:border-0"><td class="py-2 font-medium">{{ s.titulo }}</td><td>★ {{ s.promedio }}</td><td class="text-slate-500">{{ s.respuestas }}</td></tr>
+      <tr class="border-b last:border-0"><td class="py-2 font-medium">{{ s.titulo }}</td><td><i data-lucide="star" class="inline-block w-4 h-4 align-[-3px] text-amber-400 fill-amber-400"></i> {{ s.promedio }}</td><td class="text-slate-500">{{ s.respuestas }}</td></tr>
     {% endfor %}
     </tbody>
   </table>

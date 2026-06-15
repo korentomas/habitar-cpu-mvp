@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Inicio{% endblock %}
 {% block content %}
-<h1 class="text-2xl font-bold mb-1">Hola, {{ user.nombre or 'ingresante' }} 👋</h1>
+<h1 class="text-2xl font-bold mb-1">Hola, {{ user.nombre or 'ingresante' }}</h1>
 <p class="text-slate-500 mb-6">Tu recorrido en el Módulo Habitar.</p>
 
 <!-- Progreso (E-07) -->
@@ -14,7 +14,7 @@
     <div class="bg-emerald-500 h-4 rounded-full transition-all" style="width: {{ progreso.pct }}%"></div>
   </div>
   {% if progreso.complete %}
-    <p class="text-emerald-600 text-sm mt-2 font-medium">🎉 ¡Completaste los créditos del módulo!</p>
+    <p class="text-emerald-600 text-sm mt-2 font-medium inline-flex items-center gap-1"><i data-lucide="party-popper" class="w-4 h-4"></i> ¡Completaste los créditos del módulo!</p>
   {% else %}
     <p class="text-slate-500 text-sm mt-2">Te faltan {{ progreso.required - progreso.accumulated }} créditos para aprobar.</p>
   {% endif %}
@@ -31,7 +31,7 @@
       <a href="/actividades/{{ a.id }}" class="flex items-center justify-between border rounded-lg px-4 py-3 hover:bg-slate-50">
         <div>
           <p class="font-medium">{{ a.titulo }}</p>
-          <p class="text-sm text-slate-500">📅 {{ a.fecha_inicio|fmt_dt }} · 📍 {{ a.lugar }}</p>
+          <p class="text-sm text-slate-500"><i data-lucide="calendar" class="inline-block w-4 h-4 align-[-3px]"></i> {{ a.fecha_inicio|fmt_dt }} · <i data-lucide="map-pin" class="inline-block w-4 h-4 align-[-3px]"></i> {{ a.lugar }}</p>
         </div>
         <span class="text-xs px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-700">{{ a.creditos }} cr.</span>
       </a>

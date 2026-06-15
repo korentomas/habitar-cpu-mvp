@@ -11,7 +11,7 @@
   {% if user %}
   <header class="bg-slate-900 text-white">
     <nav class="max-w-5xl mx-auto px-4 py-3 flex items-center gap-4 flex-wrap">
-      <a href="/" class="font-semibold text-lg">🎓 {{ app_name }}</a>
+      <a href="/" class="font-semibold text-lg flex items-center gap-2"><i data-lucide="graduation-cap" class="w-5 h-5"></i> {{ app_name }}</a>
       <div class="flex-1"></div>
       {% if user.role == 'estudiante' %}
         <a href="/home" class="hover:underline">Inicio</a>
@@ -53,6 +53,8 @@
   <footer class="text-center text-xs text-slate-400 py-6">
     Módulo Habitar · CPU - ECyT UNSAM · Grupo 10
   </footer>
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
   {% block scripts %}{% endblock %}
+  <script>if (window.lucide) lucide.createIcons();</script>
 </body>
 </html>

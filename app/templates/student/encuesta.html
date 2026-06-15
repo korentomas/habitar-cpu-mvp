@@ -5,7 +5,7 @@
   <h1 class="text-xl font-bold mb-1">¿Qué te pareció?</h1>
   <p class="text-slate-500 text-sm mb-4">{{ a.titulo }}</p>
   {% if answered %}
-    <div class="mb-4 rounded-lg bg-slate-100 px-4 py-2 text-sm text-slate-600">Ya respondiste (★ {{ answered.rating }}). Podés actualizar tu respuesta.</div>
+    <div class="mb-4 rounded-lg bg-slate-100 px-4 py-2 text-sm text-slate-600">Ya respondiste (<i data-lucide="star" class="inline-block w-4 h-4 align-[-3px]"></i> {{ answered.rating }}). Podés actualizar tu respuesta.</div>
   {% endif %}
   <form method="post" action="/actividades/{{ a.id }}/encuesta" class="space-y-4">
     <div>
@@ -14,7 +14,7 @@
         {% for n in [1,2,3,4,5] %}
         <label class="cursor-pointer">
           <input type="radio" name="rating" value="{{ n }}" class="sr-only peer" {% if answered and answered.rating==n %}checked{% endif %} {% if n==5 and not answered %}checked{% endif %}>
-          <span class="text-3xl text-slate-300 peer-checked:text-amber-400">★</span>
+          <i data-lucide="star" class="w-8 h-8 text-slate-300 peer-checked:text-amber-400 peer-checked:fill-amber-400"></i>
         </label>
         {% endfor %}
       </div>

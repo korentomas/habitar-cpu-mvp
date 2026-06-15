@@ -1,0 +1,28 @@
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - generic [ref=e3]:
+      - heading "Módulo Habitar" [level=1] [ref=e4]:
+        - img [ref=e5]
+        - text: Módulo Habitar
+      - paragraph [ref=e8]: Plataforma del Módulo Habitar · CPU UNSAM
+      - generic [ref=e9]:
+        - generic [ref=e10]:
+          - generic [ref=e11]: Email
+          - textbox "tu@email.com" [ref=e12]
+        - generic [ref=e13]:
+          - generic [ref=e14]: Contraseña
+          - textbox [ref=e15]
+        - button "Ingresar" [ref=e16] [cursor=pointer]
+      - paragraph [ref=e17]:
+        - text: ¿Sos ingresante nuevo?
+        - link "Creá tu cuenta" [ref=e18] [cursor=pointer]:
+          - /url: /signup
+      - generic [ref=e19]:
+        - paragraph [ref=e20]:
+          - text: "Cuentas demo (contraseña:"
+          - code [ref=e21]: habitar123
+          - text: )
+        - paragraph [ref=e22]: "Estudiante: ana@alumno.unsam.edu.ar"
+        - paragraph [ref=e23]: "Coordinación: coordinacion@unsam.edu.ar"
+        - paragraph [ref=e24]: "Docente: docente@unsam.edu.ar · Director: director@unsam.edu.ar"
+  - contentinfo [ref=e25]: Módulo Habitar · CPU - ECyT UNSAM · Grupo 10
