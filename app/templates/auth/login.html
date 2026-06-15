@@ -1,9 +1,9 @@
 {% extends "base.html" %}
-{% block title %}Ingresar · {{ app_name }}{% endblock %}
+{% block title %}Ingresar - {{ app_name }}{% endblock %}
 {% block content %}
 <div class="max-w-md mx-auto mt-8 bg-white rounded-2xl shadow p-8">
   <h1 class="text-2xl font-bold mb-1 flex items-center gap-2"><i data-lucide="graduation-cap" class="w-6 h-6"></i> {{ app_name }}</h1>
-  <p class="text-slate-500 mb-6 text-sm">Plataforma del Módulo Habitar · CPU UNSAM</p>
+  <p class="text-slate-500 mb-6 text-sm">Plataforma del Módulo Habitar, CPU UNSAM</p>
   {% if error %}<div class="mb-4 rounded-lg bg-rose-100 border border-rose-300 text-rose-800 px-4 py-2 text-sm">{{ error }}</div>{% endif %}
   <form method="post" action="/login" class="space-y-4">
     <div>
@@ -21,7 +21,7 @@
     <p class="font-medium text-slate-500 mb-1">Cuentas demo (contraseña: <code>habitar123</code>)</p>
     <p>Estudiante: ana@alumno.unsam.edu.ar</p>
     <p>Coordinación: coordinacion@unsam.edu.ar</p>
-    <p>Docente: docente@unsam.edu.ar · Director: director@unsam.edu.ar</p>
+    <p>Docente: docente@unsam.edu.ar, Director: director@unsam.edu.ar</p>
   </div>
 </div>
 {% endblock %}

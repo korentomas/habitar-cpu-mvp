@@ -1,6 +1,6 @@
 # Plataforma de Gestión del Módulo Habitar (CPU - UNSAM)
 
-MVP del Trabajo Práctico Final Integrador — **Grupo 10** (Ingeniería de Software, 1C 2026).
+MVP del Trabajo Práctico Final Integrador. **Grupo 10** (Ingeniería de Software, 1C 2026).
 
 Plataforma web que centraliza la gestión del Módulo Habitar del CPU: reemplaza el proceso
 manual (Google Forms + planillas de papel + revisión de fotos) por inscripción digital,
@@ -11,11 +11,11 @@ acreditación de asistencia por **código QR** y seguimiento de créditos.
 > **https://habitar-cpu.onrender.com**
 
 Guía completa de acceso y testeo: [`docs/Instrucciones_Demo_y_QC.md`](docs/Instrucciones_Demo_y_QC.md).
-Primer acceso: el plan gratuito hiberna; puede demorar ~30–50 s en reactivarse.
+Primer acceso: el plan gratuito hiberna; puede demorar ~30-50 s en reactivarse.
 
 Cuentas de prueba (contraseña `habitar123`): `ana@alumno.unsam.edu.ar` (estudiante),
 `coordinacion@unsam.edu.ar`, `docente@unsam.edu.ar`, `director@unsam.edu.ar`.
-Alta de estudiante nuevo: usar un legajo del padrón demo (`1003`–`1008`, `2001`, `2002`).
+Alta de estudiante nuevo: usar un legajo del padrón demo (`1003`-`1008`, `2001`, `2002`).
 
 ## Stack
 - **Backend:** FastAPI + SQLAlchemy 2 + Jinja2 (Python 3.13)
@@ -46,7 +46,7 @@ Alta de estudiante nuevo: usar un legajo del padrón demo (`1003`–`1008`, `200
 | Docente | `docente@unsam.edu.ar` |
 | Director de carrera | `director@unsam.edu.ar` |
 
-Para registrarte como estudiante nuevo usá un legajo del padrón demo: `1003`–`1008`.
+Para registrarte como estudiante nuevo usá un legajo del padrón demo: `1003`-`1008`.
 
 ## Correr localmente
 ```bash

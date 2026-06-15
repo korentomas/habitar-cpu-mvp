@@ -31,7 +31,7 @@
       <a href="/actividades/{{ a.id }}" class="flex items-center justify-between border rounded-lg px-4 py-3 hover:bg-slate-50">
         <div>
           <p class="font-medium">{{ a.titulo }}</p>
-          <p class="text-sm text-slate-500"><i data-lucide="calendar" class="inline-block w-4 h-4 align-[-3px]"></i> {{ a.fecha_inicio|fmt_dt }} · <i data-lucide="map-pin" class="inline-block w-4 h-4 align-[-3px]"></i> {{ a.lugar }}</p>
+          <p class="text-sm text-slate-500"><i data-lucide="calendar" class="inline-block w-4 h-4 align-[-3px]"></i> {{ a.fecha_inicio|fmt_dt }}, <i data-lucide="map-pin" class="inline-block w-4 h-4 align-[-3px]"></i> {{ a.lugar }}</p>
         </div>
         <span class="text-xs px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-700">{{ a.creditos }} cr.</span>
       </a>

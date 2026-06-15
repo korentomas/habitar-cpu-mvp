@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Crear cuenta · {{ app_name }}{% endblock %}
+{% block title %}Crear cuenta - {{ app_name }}{% endblock %}
 {% block content %}
 <div class="max-w-md mx-auto mt-8 bg-white rounded-2xl shadow p-8">
   <h1 class="text-2xl font-bold mb-1">Crear cuenta</h1>
@@ -9,7 +9,7 @@
     <div>
       <label class="block text-sm font-medium mb-1">Legajo UNSAM</label>
       <input name="legajo" value="{{ legajo or '' }}" required class="w-full border rounded-lg px-3 py-2" placeholder="Ej: 1001">
-      <p class="text-xs text-slate-400 mt-1">Para la demo, probá con 1003–1008.</p>
+      <p class="text-xs text-slate-400 mt-1">Para la demo, probá con 1003-1008.</p>
     </div>
     <div class="grid grid-cols-2 gap-3">
       <div><label class="block text-sm font-medium mb-1">Nombre</label><input name="nombre" value="{{ nombre or '' }}" required class="w-full border rounded-lg px-3 py-2"></div>

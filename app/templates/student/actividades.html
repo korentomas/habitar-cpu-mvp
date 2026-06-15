@@ -40,8 +40,8 @@
         <h2 class="font-semibold text-lg">{{ r.a.titulo }}</h2>
         <span class="text-xs px-2 py-0.5 rounded-full {% if r.a.tipo=='virtual' %}bg-sky-100 text-sky-700{% else %}bg-amber-100 text-amber-700{% endif %}">{{ r.a.tipo }}</span>
       </div>
-      <p class="text-sm text-slate-500"><i data-lucide="calendar" class="inline-block w-4 h-4 align-[-3px]"></i> {{ r.a.fecha_inicio|fmt_dt }} · <i data-lucide="map-pin" class="inline-block w-4 h-4 align-[-3px]"></i> {{ r.a.lugar }}</p>
-      <p class="text-sm text-slate-600 mt-1"><i data-lucide="star" class="inline-block w-4 h-4 align-[-3px]"></i> {{ r.a.creditos }} créditos · cupos: {{ r.cupo.free }}/{{ r.a.cupo_max }}</p>
+      <p class="text-sm text-slate-500"><i data-lucide="calendar" class="inline-block w-4 h-4 align-[-3px]"></i> {{ r.a.fecha_inicio|fmt_dt }}, <i data-lucide="map-pin" class="inline-block w-4 h-4 align-[-3px]"></i> {{ r.a.lugar }}</p>
+      <p class="text-sm text-slate-600 mt-1"><i data-lucide="star" class="inline-block w-4 h-4 align-[-3px]"></i> {{ r.a.creditos }} créditos, cupos: {{ r.cupo.free }}/{{ r.a.cupo_max }}</p>
     </div>
     <div class="flex items-center gap-2">
       {% if r.enrolled %}<span class="text-emerald-600 text-sm font-medium inline-flex items-center gap-1"><i data-lucide="check" class="w-4 h-4"></i> Inscripto</span>{% endif %}

@@ -1,6 +1,6 @@
-# Plataforma de Gestión del Módulo Habitar (CPU - UNSAM) — MVP Design
+# Plataforma de Gestión del Módulo Habitar (CPU - UNSAM). MVP Design
 
-**Date:** 2026-06-15 · **Group 10** · Source: `Whitepaper_Grupo10.docx.pdf`
+**Date:** 2026-06-15, **Group 10**, Source: `Whitepaper_Grupo10.docx.pdf`
 
 ## Goal
 Replace the manual (Google Forms + paper attendance + photo review) process for the
@@ -33,7 +33,7 @@ app/
   security.py      bcrypt hashing, session cookie, current_user deps, role guards
   email_util.py    email backend: SMTP if configured else console/log
   notifications.py in-app + email notify service
-  scheduler.py     APScheduler — 24h reminders
+  scheduler.py     APScheduler, 24h reminders
   seed.py          seed valid_legajos, staff users, demo activities, faq, config
   services/        identity, activities, enrollment, attendance, credits, analytics
   routers/         auth, discovery, enrollment, attendance, admin_activities, admin_enroll, analytics, faq
@@ -42,20 +42,20 @@ app/
 ```
 
 ## Roles
-`estudiante` (self-signup, legajo verified) · `coordinacion` (admin, seeded) ·
-`docente` (seeded, validates attendance) · `director` (seeded, read-only analytics).
+`estudiante` (self-signup, legajo verified), `coordinacion` (admin, seeded),
+`docente` (seeded, validates attendance), `director` (seeded, read-only analytics).
 
 ## Data model
 - **users**(id, legajo, email unique, pw_hash, nombre, apellido, dni, carrera, role, created_at)
-- **valid_legajos**(legajo PK, nombre) — SIU mock; signup must match
+- **valid_legajos**(legajo PK, nombre), SIU mock; signup must match
 - **activities**(id, titulo, descripcion, tipo[presencial|virtual], fecha_inicio, fecha_fin, lugar, docente_id→users, creditos, cupo_max, estado[borrador|publicada|cancelada], created_by, created_at)
-- **enrollments**(id, activity_id, user_id, estado[inscripto|baja], created_at) — unique active (activity,user); cupo enforced **transactionally** (row lock on activity)
-- **attendance_sessions**(id, activity_id, token, expires_at, created_by) — rotating token for QR
-- **attendance**(id, activity_id, user_id, validated_by→users, validated_at) — unique (activity,user); audit trail
+- **enrollments**(id, activity_id, user_id, estado[inscripto|baja], created_at), unique active (activity,user); cupo enforced **transactionally** (row lock on activity)
+- **attendance_sessions**(id, activity_id, token, expires_at, created_by), rotating token for QR
+- **attendance**(id, activity_id, user_id, validated_by→users, validated_at), unique (activity,user); audit trail
 - **survey_responses**(id, activity_id, user_id, rating 1-5, comment, created_at)
 - **faq**(id, pregunta, respuesta, orden)
 - **notifications**(id, user_id, mensaje, leido, created_at)
-- **app_config**(key PK, value) — holds `required_credits`
+- **app_config**(key PK, value), holds `required_credits`
 
 ## Epic behaviour (MVP depth)
 - **E-01 Auth:** signup(legajo∈valid_legajos)→estudiante; login/logout; min profile; role guards. Staff seeded.

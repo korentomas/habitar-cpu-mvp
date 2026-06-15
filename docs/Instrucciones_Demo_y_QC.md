@@ -1,8 +1,8 @@
-# Plataforma de Gestión del Módulo Habitar (CPU – UNSAM)
+# Plataforma de Gestión del Módulo Habitar (CPU - UNSAM)
 ## Instrucciones de Acceso a la Demo y Manual de Testeo / QC
 
-**Grupo 10** — Julián Fraga · Martín Groisman · Tomás Korenblit · Marcelo Velizán
-Trabajo Práctico Final Integrador — Ingeniería de Software, 1C 2026
+**Grupo 10**, Julián Fraga, Martín Groisman, Tomás Korenblit, Marcelo Velizán
+Trabajo Práctico Final Integrador, Ingeniería de Software, 1C 2026
 
 ---
 
@@ -52,7 +52,7 @@ El sistema inicializa, de forma idempotente, un conjunto de datos de demostraci�
 
 - Padrón de legajos válidos y las cuatro cuentas de rol descritas arriba.
 - Actividades de ejemplo en distintos estados y fechas:
-  - *Bienvenida al campus* (presencial, pasada, 2 créditos) — con asistencia ya acreditada.
+  - *Bienvenida al campus* (presencial, pasada, 2 créditos), con asistencia ya acreditada.
   - *Taller de hábitos de estudio* (presencial, dentro de 24 h, 3 créditos, **cupo 2** para evidenciar el control de cupos).
   - *Charla: vida universitaria* (virtual, 2 créditos).
   - *Laboratorio abierto de Física* (presencial, 4 créditos).
@@ -103,37 +103,37 @@ Los siguientes recorridos reproducen los flujos descritos en el whitepaper
 Casos de prueba de aceptación organizados por épica (alineados con las secciones 8.6
 y 8.7 del whitepaper). Cada caso indica **precondición → pasos → resultado esperado**.
 
-### E-01 — Autenticación y perfil
+### E-01. Autenticación y perfil
 | ID | Caso | Pasos | Resultado esperado |
 |---|---|---|---|
 | T-01 | Login válido | Ingresar con una cuenta de prueba | Acceso al panel correspondiente al rol |
 | T-02 | Login inválido | Contraseña incorrecta | Mensaje *“Email o contraseña incorrectos”* |
 | T-03 | Alta con legajo válido | Registrarse con legajo 1003 | Cuenta creada e ingreso automático |
 | T-04 | Alta con legajo inválido | Registrarse con legajo 9999 | Rechazo: *“no figura en el padrón UNSAM”* |
-| T-05 | Control de acceso por rol | Como estudiante, abrir `/admin` | Pantalla **403 – Sin permiso** |
+| T-05 | Control de acceso por rol | Como estudiante, abrir `/admin` | Pantalla **403 - Sin permiso** |
 
-### E-02 — Descubrimiento y exploración
+### E-02. Descubrimiento y exploración
 | ID | Caso | Pasos | Resultado esperado |
 |---|---|---|---|
 | T-06 | Listado | Abrir **Actividades** | Se ven solo las actividades publicadas |
 | T-07 | Filtros | Filtrar por tipo / fecha / créditos / con cupo | El listado se reduce según el criterio |
 | T-08 | Detalle | Abrir una actividad | Se ven datos completos y el cupo disponible |
 
-### E-03 — Inscripción y control de cupos
+### E-03. Inscripción y control de cupos
 | ID | Caso | Pasos | Resultado esperado |
 |---|---|---|---|
 | T-09 | Inscripción | Inscribirse en una actividad con cupo | Confirmación + notificación por mail/in-app |
 | T-10 | Baja | Darse de baja | Se libera el cupo |
 | T-11 | Cupo lleno | Inscribir un 3.er estudiante en *“Taller de hábitos de estudio”* (cupo 2) | Rechazo: *“No quedan cupos disponibles”* |
 
-### E-04 — Recordatorios y seguimiento
+### E-04. Recordatorios y seguimiento
 | ID | Caso | Pasos | Resultado esperado |
 |---|---|---|---|
 | T-12 | Próximas actividades | Inicio del estudiante | Sección *“Mis próximas actividades”* poblada |
 | T-13 | FAQ | Abrir **Ayuda** | Se ven las preguntas frecuentes |
 | T-14 | Recordatorio 24 h | (Automático) | El sistema agenda el envío 24 h antes del inicio |
 
-### E-05 — Registro de asistencia con QR
+### E-05. Registro de asistencia con QR
 | ID | Caso | Pasos | Resultado esperado |
 |---|---|---|---|
 | T-15 | Acreditación | Docente abre asistencia → estudiante ingresa el código | *“¡Asistencia registrada!”* + suma de créditos |
@@ -141,18 +141,18 @@ y 8.7 del whitepaper). Cada caso indica **precondición → pasos → resultado 
 | T-17 | No inscripto | Acreditar a un estudiante no inscripto | Rechazo: *“No estás inscripto en esta actividad”* |
 | T-18 | Doble acreditación | Validar dos veces | Rechazo: *“Tu asistencia ya fue registrada”* |
 
-### E-06 — Encuesta de satisfacción
+### E-06. Encuesta de satisfacción
 | ID | Caso | Pasos | Resultado esperado |
 |---|---|---|---|
 | T-19 | Encuesta | Tras acreditar, responder la encuesta | Respuesta guardada y asociada a la actividad |
 
-### E-07 — Progreso del estudiante
+### E-07. Progreso del estudiante
 | ID | Caso | Pasos | Resultado esperado |
 |---|---|---|---|
 | T-20 | Créditos y barra | Inicio del estudiante | Créditos acumulados y barra de progreso correctos |
 | T-21 | Historial | Inicio del estudiante | Listado de actividades completadas |
 
-### E-08 — Gestión de actividades (administración)
+### E-08. Gestión de actividades (administración)
 | ID | Caso | Pasos | Resultado esperado |
 |---|---|---|---|
 | T-22 | Alta | Crear una actividad | Queda en estado borrador |
@@ -160,14 +160,14 @@ y 8.7 del whitepaper). Cada caso indica **precondición → pasos → resultado 
 | T-24 | Publicación | Publicar | La actividad pasa a ser visible para estudiantes |
 | T-25 | Edición + aviso | Editar una actividad publicada con inscriptos | Se notifica automáticamente a los inscriptos |
 
-### E-09 — Inscriptos y asistencia (administración)
+### E-09. Inscriptos y asistencia (administración)
 | ID | Caso | Pasos | Resultado esperado |
 |---|---|---|---|
 | T-26 | Listado de inscriptos | Abrir **Inscriptos** de una actividad | Lista con estado de asistencia |
 | T-27 | Exportación | Exportar a CSV y a Excel | Se descargan los archivos con los inscriptos |
 | T-28 | Importación | Importar un CSV/XLSX con columna `legajo` | Se incorporan los legajos nuevos al padrón |
 
-### E-10 — Analítica y reportes
+### E-10. Analítica y reportes
 | ID | Caso | Pasos | Resultado esperado |
 |---|---|---|---|
 | T-29 | Dashboard | Abrir **Analítica** (coordinación o director) | Tarjetas + gráficos (inscriptos vs. asistencias, más elegidas) y promedios de encuesta |
