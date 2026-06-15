@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}{{ a.titulo }}{% endblock %}
+{% block content %}
+<a href="/actividades" class="text-sm text-indigo-600 hover:underline">← Volver a actividades</a>
+<div class="bg-white rounded-2xl shadow p-8 mt-3">
+  <div class="flex items-center gap-2 mb-2">
+    <h1 class="text-2xl font-bold">{{ a.titulo }}</h1>
+    <span class="text-xs px-2 py-0.5 rounded-full {% if a.tipo=='virtual' %}bg-sky-100 text-sky-700{% else %}bg-amber-100 text-amber-700{% endif %}">{{ a.tipo }}</span>
+  </div>
+  <p class="text-slate-600 mb-4">{{ a.descripcion }}</p>
+  <dl class="grid sm:grid-cols-2 gap-3 text-sm mb-6">
+    <div class="bg-slate-50 rounded-lg p-3"><dt class="text-slate-400">Inicio</dt><dd class="font-medium">{{ a.fecha_inicio|fmt_dt }}</dd></div>
+    <div class="bg-slate-50 rounded-lg p-3"><dt class="text-slate-400">Fin</dt><dd class="font-medium">{{ a.fecha_fin|fmt_dt }}</dd></div>
+    <div class="bg-slate-50 rounded-lg p-3"><dt class="text-slate-400">Lugar</dt><dd class="font-medium">{{ a.lugar }}</dd></div>
+    <div class="bg-slate-50 rounded-lg p-3"><dt class="text-slate-400">Docente</dt><dd class="font-medium">{{ a.docente.full_name if a.docente else '—' }}</dd></div>
+    <div class="bg-slate-50 rounded-lg p-3"><dt class="text-slate-400">Créditos</dt><dd class="font-medium">{{ a.creditos }}</dd></div>
+    <div class="bg-slate-50 rounded-lg p-3"><dt class="text-slate-400">Cupos disponibles</dt><dd class="font-medium">{{ cupo.free }} / {{ a.cupo_max }}</dd></div>
+  </dl>
+
+  {% if user.role == 'estudiante' %}
+    {% if enrolled %}
+      <div class="flex items-center gap-3">
+        <span class="text-emerald-600 font-medium">✓ Estás inscripto/a</span>
+        <form method="post" action="/actividades/{{ a.id }}/baja">
+          <button class="border border-rose-300 text-rose-600 hover:bg-rose-50 rounded-lg px-4 py-2 text-sm">Darme de baja</button>
+        </form>
+      </div>
+    {% elif cupo.full %}
+      <span class="text-rose-500 font-medium">No quedan cupos disponibles.</span>
+    {% else %}
+      <form method="post" action="/actividades/{{ a.id }}/inscribir">
+        <button class="bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg px-6 py-2.5 font-medium">Inscribirme</button>
+      </form>
+    {% endif %}
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Mi perfil{% endblock %}
+{% block content %}
+<div class="max-w-lg mx-auto bg-white rounded-2xl shadow p-8">
+  <h1 class="text-2xl font-bold mb-4">Mi perfil</h1>
+  <div class="text-sm text-slate-500 mb-4">
+    <span class="mr-4">Legajo: <b class="text-slate-700">{{ user.legajo or '—' }}</b></span>
+    <span>Email: <b class="text-slate-700">{{ user.email }}</b></span>
+  </div>
+  <form method="post" action="/perfil" class="space-y-4">
+    <div class="grid grid-cols-2 gap-3">
+      <div><label class="block text-sm font-medium mb-1">Nombre</label><input name="nombre" value="{{ user.nombre }}" required class="w-full border rounded-lg px-3 py-2"></div>
+      <div><label class="block text-sm font-medium mb-1">Apellido</label><input name="apellido" value="{{ user.apellido }}" required class="w-full border rounded-lg px-3 py-2"></div>
+    </div>
+    <div class="grid grid-cols-2 gap-3">
+      <div><label class="block text-sm font-medium mb-1">DNI</label><input name="dni" value="{{ user.dni or '' }}" class="w-full border rounded-lg px-3 py-2"></div>
+      <div><label class="block text-sm font-medium mb-1">Carrera</label><input name="carrera" value="{{ user.carrera or '' }}" class="w-full border rounded-lg px-3 py-2"></div>
+    </div>
+    <button class="bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg px-5 py-2 font-medium">Guardar</button>
+  </form>
+</div>
+{% endblock %}

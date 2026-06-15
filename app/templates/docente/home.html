@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Mis actividades{% endblock %}
+{% block content %}
+<h1 class="text-2xl font-bold mb-4">Actividades para tomar asistencia</h1>
+{% if not activities %}
+  <p class="text-slate-500">No tenés actividades asignadas.</p>
+{% endif %}
+<div class="space-y-3">
+  {% for a in activities %}
+  <div class="bg-white rounded-xl shadow p-4 flex items-center justify-between">
+    <div>
+      <p class="font-semibold">{{ a.titulo }}</p>
+      <p class="text-sm text-slate-500">📅 {{ a.fecha_inicio|fmt_dt }} · 📍 {{ a.lugar }}</p>
+    </div>
+    <a href="/docente/actividades/{{ a.id }}/asistencia" class="bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg px-4 py-2 text-sm">Tomar asistencia</a>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

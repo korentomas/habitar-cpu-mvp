@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Panel de actividades{% endblock %}
+{% block content %}
+<div class="flex items-center justify-between mb-4">
+  <h1 class="text-2xl font-bold">Panel de actividades</h1>
+  <a href="/admin/actividades/nueva" class="bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg px-4 py-2 text-sm">+ Nueva actividad</a>
+</div>
+
+<div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+  <div class="bg-white rounded-xl shadow p-4"><p class="text-xs text-slate-400">Publicadas</p><p class="text-2xl font-bold text-emerald-600">{{ resumen.publicadas }}</p></div>
+  <div class="bg-white rounded-xl shadow p-4"><p class="text-xs text-slate-400">Borradores</p><p class="text-2xl font-bold text-amber-500">{{ resumen.borradores }}</p></div>
+  <div class="bg-white rounded-xl shadow p-4"><p class="text-xs text-slate-400">Total actividades</p><p class="text-2xl font-bold">{{ resumen.total }}</p></div>
+  <div class="bg-white rounded-xl shadow p-4"><p class="text-xs text-slate-400">Inscripciones</p><p class="text-2xl font-bold text-indigo-600">{{ resumen.inscripciones }}</p></div>
+</div>
+
+<div class="bg-white rounded-2xl shadow overflow-hidden">
+  <table class="w-full text-sm">
+    <thead class="bg-slate-100 text-slate-500 text-left">
+      <tr><th class="px-4 py-3">Actividad</th><th>Fecha</th><th>Estado</th><th>Cupo</th><th class="text-right px-4">Acciones</th></tr>
+    </thead>
+    <tbody>
+    {% for r in rows %}
+      <tr class="border-t">
+        <td class="px-4 py-3 font-medium">{{ r.a.titulo }}<span class="block text-xs text-slate-400">{{ r.a.tipo }}</span></td>
+        <td class="text-slate-500">{{ r.a.fecha_inicio|fmt_dt }}</td>
+        <td>
+          {% if r.a.estado=='publicada' %}<span class="text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700">publicada</span>
+          {% elif r.a.estado=='borrador' %}<span class="text-xs px-2 py-0.5 rounded-full bg-amber-100 text-amber-700">borrador</span>
+          {% else %}<span class="text-xs px-2 py-0.5 rounded-full bg-slate-200 text-slate-600">cancelada</span>{% endif %}
+        </td>
+        <td class="text-slate-500">{{ r.cupo.taken }}/{{ r.a.cupo_max }}</td>
+        <td class="px-4 py-3">
+          <div class="flex gap-2 justify-end flex-wrap text-xs">
+            <a href="/admin/actividades/{{ r.a.id }}/preview" class="text-slate-600 hover:underline">Vista previa</a>
+            <a href="/admin/actividades/{{ r.a.id }}/editar" class="text-indigo-600 hover:underline">Editar</a>
+            <a href="/admin/inscriptos/{{ r.a.id }}" class="text-indigo-600 hover:underline">Inscriptos</a>
+            <a href="/docente/actividades/{{ r.a.id }}/asistencia" class="text-indigo-600 hover:underline">Asistencia</a>
+            {% if r.a.estado != 'publicada' %}
+              <form method="post" action="/admin/actividades/{{ r.a.id }}/publicar"><button class="text-emerald-600 hover:underline">Publicar</button></form>
+            {% else %}
+              <form method="post" action="/admin/actividades/{{ r.a.id }}/cancelar" onsubmit="return confirm('¿Cancelar esta actividad?')"><button class="text-rose-600 hover:underline">Cancelar</button></form>
+            {% endif %}
+          </div>
+        </td>
+      </tr>
+    {% else %}
+      <tr><td colspan="5" class="px-4 py-6 text-center text-slate-500">No hay actividades. Creá la primera.</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

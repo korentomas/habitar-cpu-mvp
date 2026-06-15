@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Inscriptos · {{ a.titulo }}{% endblock %}
+{% block content %}
+<a href="/admin/inscriptos" class="text-sm text-indigo-600 hover:underline">← Inscriptos</a>
+<div class="flex items-center justify-between mt-2 mb-4 flex-wrap gap-3">
+  <div>
+    <h1 class="text-2xl font-bold">{{ a.titulo }}</h1>
+    <p class="text-slate-500 text-sm">📅 {{ a.fecha_inicio|fmt_dt }} · {{ inscriptos|length }} inscriptos</p>
+  </div>
+  <div class="flex gap-2">
+    <a href="/admin/inscriptos/{{ a.id }}/export.csv" class="border rounded-lg px-3 py-2 text-sm hover:bg-slate-50">⬇ CSV</a>
+    <a href="/admin/inscriptos/{{ a.id }}/export.xlsx" class="border rounded-lg px-3 py-2 text-sm hover:bg-slate-50">⬇ Excel</a>
+  </div>
+</div>
+
+<div class="bg-white rounded-2xl shadow overflow-hidden">
+  <table class="w-full text-sm">
+    <thead class="bg-slate-100 text-slate-500 text-left"><tr><th class="px-4 py-3">Legajo</th><th>Estudiante</th><th>Email</th><th>Asistencia</th><th></th></tr></thead>
+    <tbody>
+    {% for e in inscriptos %}
+      <tr class="border-t">
+        <td class="px-4 py-3">{{ e.user.legajo or '—' }}</td>
+        <td class="font-medium">{{ e.user.full_name }}</td>
+        <td class="text-slate-500">{{ e.user.email }}</td>
+        <td>
+          {% if e.user_id in present %}<span class="text-emerald-600 font-medium">✓ Presente</span>
+          {% else %}<span class="text-slate-400">Sin registrar</span>{% endif %}
+        </td>
+        <td class="px-4 py-3 text-right">
+          {% if e.user_id not in present %}
+          <form method="post" action="/docente/actividades/{{ a.id }}/marcar/{{ e.user_id }}"><button class="text-xs border rounded-lg px-2 py-1 hover:bg-slate-50">Validar asistencia</button></form>
+          {% endif %}
+        </td>
+      </tr>
+    {% else %}
+      <tr><td colspan="5" class="px-4 py-6 text-center text-slate-500">Sin inscriptos.</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

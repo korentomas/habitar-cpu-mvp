@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{{ app_name }}{% endblock %}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+  {% if user %}
+  <header class="bg-slate-900 text-white">
+    <nav class="max-w-5xl mx-auto px-4 py-3 flex items-center gap-4 flex-wrap">
+      <a href="/" class="font-semibold text-lg">🎓 {{ app_name }}</a>
+      <div class="flex-1"></div>
+      {% if user.role == 'estudiante' %}
+        <a href="/home" class="hover:underline">Inicio</a>
+        <a href="/actividades" class="hover:underline">Actividades</a>
+        <a href="/checkin" class="hover:underline">Registrar asistencia</a>
+        <a href="/faq" class="hover:underline">Ayuda</a>
+      {% elif user.role == 'coordinacion' %}
+        <a href="/admin" class="hover:underline">Actividades</a>
+        <a href="/admin/inscriptos" class="hover:underline">Inscriptos</a>
+        <a href="/analytics" class="hover:underline">Analítica</a>
+        <a href="/admin/faq" class="hover:underline">FAQ</a>
+      {% elif user.role == 'docente' %}
+        <a href="/docente" class="hover:underline">Mis actividades</a>
+      {% elif user.role == 'director' %}
+        <a href="/analytics" class="hover:underline">Analítica</a>
+      {% endif %}
+      <a href="/notificaciones" class="relative hover:underline">
+        Avisos
+        {% if unread %}<span class="absolute -top-2 -right-3 bg-rose-500 text-xs rounded-full px-1.5">{{ unread }}</span>{% endif %}
+      </a>
+      <span class="text-slate-400 text-sm">{{ user.full_name }}</span>
+      <a href="/logout" class="bg-slate-700 hover:bg-slate-600 px-3 py-1 rounded text-sm">Salir</a>
+    </nav>
+  </header>
+  {% endif %}
+
+  <main class="max-w-5xl mx-auto px-4 py-6 w-full flex-1">
+    {% set msg = request.query_params.get('msg') %}
+    {% set err = request.query_params.get('err') %}
+    {% if msg %}
+      <div class="mb-4 rounded-lg bg-emerald-100 border border-emerald-300 text-emerald-800 px-4 py-3">{{ msg }}</div>
+    {% endif %}
+    {% if err %}
+      <div class="mb-4 rounded-lg bg-rose-100 border border-rose-300 text-rose-800 px-4 py-3">{{ err }}</div>
+    {% endif %}
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="text-center text-xs text-slate-400 py-6">
+    Módulo Habitar · CPU - ECyT UNSAM · Grupo 10
+  </footer>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

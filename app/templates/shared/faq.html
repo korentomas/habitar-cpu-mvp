@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Preguntas frecuentes{% endblock %}
+{% block content %}
+<h1 class="text-2xl font-bold mb-4">Preguntas frecuentes</h1>
+<div class="space-y-3">
+  {% for f in items %}
+  <details class="bg-white rounded-xl shadow p-4">
+    <summary class="font-medium cursor-pointer">{{ f.pregunta }}</summary>
+    <p class="text-slate-600 text-sm mt-2">{{ f.respuesta }}</p>
+  </details>
+  {% else %}
+  <p class="text-slate-500">Todavía no hay preguntas cargadas.</p>
+  {% endfor %}
+</div>
+{% endblock %}

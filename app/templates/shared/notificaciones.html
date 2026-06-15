@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Avisos{% endblock %}
+{% block content %}
+<h1 class="text-2xl font-bold mb-4">Avisos</h1>
+<div class="bg-white rounded-2xl shadow divide-y">
+  {% if not items %}
+    <p class="p-6 text-slate-500 text-sm">No tenés avisos.</p>
+  {% endif %}
+  {% for n in items %}
+    <div class="p-4 {% if not n.leido %}bg-indigo-50/40{% endif %}">
+      <p class="text-sm">{{ n.mensaje }}</p>
+      <p class="text-xs text-slate-400 mt-1">{{ n.created_at|fmt_dt }}</p>
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}

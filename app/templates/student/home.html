@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Inicio{% endblock %}
+{% block content %}
+<h1 class="text-2xl font-bold mb-1">Hola, {{ user.nombre or 'ingresante' }} 👋</h1>
+<p class="text-slate-500 mb-6">Tu recorrido en el Módulo Habitar.</p>
+
+<!-- Progreso (E-07) -->
+<div class="bg-white rounded-2xl shadow p-6 mb-6">
+  <div class="flex items-baseline justify-between mb-2">
+    <h2 class="font-semibold text-lg">Mi progreso</h2>
+    <span class="text-sm text-slate-500">{{ progreso.accumulated }} / {{ progreso.required }} créditos</span>
+  </div>
+  <div class="w-full bg-slate-200 rounded-full h-4 overflow-hidden">
+    <div class="bg-emerald-500 h-4 rounded-full transition-all" style="width: {{ progreso.pct }}%"></div>
+  </div>
+  {% if progreso.complete %}
+    <p class="text-emerald-600 text-sm mt-2 font-medium">🎉 ¡Completaste los créditos del módulo!</p>
+  {% else %}
+    <p class="text-slate-500 text-sm mt-2">Te faltan {{ progreso.required - progreso.accumulated }} créditos para aprobar.</p>
+  {% endif %}
+</div>
+
+<!-- Mis próximas actividades (E-04) -->
+<div class="bg-white rounded-2xl shadow p-6 mb-6">
+  <h2 class="font-semibold text-lg mb-3">Mis próximas actividades</h2>
+  {% if not proximas %}
+    <p class="text-slate-500 text-sm">No tenés actividades próximas. <a href="/actividades" class="text-indigo-600 hover:underline">Explorá la oferta</a>.</p>
+  {% else %}
+    <div class="space-y-2">
+      {% for a in proximas %}
+      <a href="/actividades/{{ a.id }}" class="flex items-center justify-between border rounded-lg px-4 py-3 hover:bg-slate-50">
+        <div>
+          <p class="font-medium">{{ a.titulo }}</p>
+          <p class="text-sm text-slate-500">📅 {{ a.fecha_inicio|fmt_dt }} · 📍 {{ a.lugar }}</p>
+        </div>
+        <span class="text-xs px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-700">{{ a.creditos }} cr.</span>
+      </a>
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>
+
+<!-- Historial (E-07) -->
+<div class="bg-white rounded-2xl shadow p-6">
+  <h2 class="font-semibold text-lg mb-3">Actividades completadas</h2>
+  {% if not historial %}
+    <p class="text-slate-500 text-sm">Todavía no registraste asistencia a ninguna actividad.</p>
+  {% else %}
+    <table class="w-full text-sm">
+      <thead><tr class="text-left text-slate-400 border-b"><th class="py-2">Actividad</th><th>Créditos</th><th>Fecha</th></tr></thead>
+      <tbody>
+      {% for a, when in historial %}
+        <tr class="border-b last:border-0"><td class="py-2 font-medium">{{ a.titulo }}</td><td>{{ a.creditos }}</td><td class="text-slate-500">{{ when|fmt_dt }}</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  {% endif %}
+</div>
+{% endblock %}

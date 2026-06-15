@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Actividades{% endblock %}
+{% block content %}
+<h1 class="text-2xl font-bold mb-4">Actividades disponibles</h1>
+
+<form method="get" action="/actividades" class="bg-white rounded-xl shadow p-4 mb-6 grid sm:grid-cols-5 gap-3 items-end">
+  <div>
+    <label class="block text-xs font-medium mb-1">Tipo</label>
+    <select name="tipo" class="w-full border rounded-lg px-2 py-2">
+      <option value="">Todos</option>
+      {% for t in tipos %}<option value="{{ t }}" {% if filtros.tipo==t %}selected{% endif %}>{{ t|capitalize }}</option>{% endfor %}
+    </select>
+  </div>
+  <div>
+    <label class="block text-xs font-medium mb-1">Fecha</label>
+    <input type="date" name="fecha" value="{{ filtros.fecha }}" class="w-full border rounded-lg px-2 py-2">
+  </div>
+  <div>
+    <label class="block text-xs font-medium mb-1">Créditos mín.</label>
+    <input type="number" name="min_creditos" min="1" value="{{ filtros.min_creditos }}" class="w-full border rounded-lg px-2 py-2">
+  </div>
+  <label class="flex items-center gap-2 text-sm">
+    <input type="checkbox" name="solo_disponibles" value="1" {% if filtros.solo_disponibles %}checked{% endif %}> Con cupo
+  </label>
+  <div class="flex gap-2">
+    <button class="bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg px-4 py-2 text-sm">Filtrar</button>
+    <a href="/actividades" class="text-slate-500 px-2 py-2 text-sm hover:underline">Limpiar</a>
+  </div>
+</form>
+
+{% if not rows %}
+  <p class="text-slate-500">No hay actividades que coincidan con los filtros.</p>
+{% endif %}
+
+<div class="space-y-3">
+  {% for r in rows %}
+  <div class="bg-white rounded-xl shadow p-4 flex flex-col sm:flex-row sm:items-center gap-3">
+    <div class="flex-1">
+      <div class="flex items-center gap-2">
+        <h2 class="font-semibold text-lg">{{ r.a.titulo }}</h2>
+        <span class="text-xs px-2 py-0.5 rounded-full {% if r.a.tipo=='virtual' %}bg-sky-100 text-sky-700{% else %}bg-amber-100 text-amber-700{% endif %}">{{ r.a.tipo }}</span>
+      </div>
+      <p class="text-sm text-slate-500">📅 {{ r.a.fecha_inicio|fmt_dt }} · 📍 {{ r.a.lugar }}</p>
+      <p class="text-sm text-slate-600 mt-1">⭐ {{ r.a.creditos }} créditos · cupos: {{ r.cupo.free }}/{{ r.a.cupo_max }}</p>
+    </div>
+    <div class="flex items-center gap-2">
+      {% if r.enrolled %}<span class="text-emerald-600 text-sm font-medium">✓ Inscripto</span>{% endif %}
+      {% if r.cupo.full and not r.enrolled %}<span class="text-rose-500 text-sm">Sin cupo</span>{% endif %}
+      <a href="/actividades/{{ r.a.id }}" class="bg-slate-800 hover:bg-slate-700 text-white rounded-lg px-4 py-2 text-sm">Ver detalle</a>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

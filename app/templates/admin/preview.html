@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Vista previa{% endblock %}
+{% block content %}
+<a href="/admin" class="text-sm text-indigo-600 hover:underline">← Panel</a>
+<div class="mt-3 mb-3 rounded-lg bg-amber-100 border border-amber-300 text-amber-800 px-4 py-2 text-sm">
+  👁️ Vista previa — así verán la actividad los estudiantes.
+</div>
+<div class="bg-white rounded-2xl shadow p-8">
+  <div class="flex items-center gap-2 mb-2">
+    <h1 class="text-2xl font-bold">{{ a.titulo }}</h1>
+    <span class="text-xs px-2 py-0.5 rounded-full {% if a.tipo=='virtual' %}bg-sky-100 text-sky-700{% else %}bg-amber-100 text-amber-700{% endif %}">{{ a.tipo }}</span>
+  </div>
+  <p class="text-slate-600 mb-4">{{ a.descripcion }}</p>
+  <dl class="grid sm:grid-cols-2 gap-3 text-sm">
+    <div class="bg-slate-50 rounded-lg p-3"><dt class="text-slate-400">Inicio</dt><dd class="font-medium">{{ a.fecha_inicio|fmt_dt }}</dd></div>
+    <div class="bg-slate-50 rounded-lg p-3"><dt class="text-slate-400">Fin</dt><dd class="font-medium">{{ a.fecha_fin|fmt_dt }}</dd></div>
+    <div class="bg-slate-50 rounded-lg p-3"><dt class="text-slate-400">Lugar</dt><dd class="font-medium">{{ a.lugar }}</dd></div>
+    <div class="bg-slate-50 rounded-lg p-3"><dt class="text-slate-400">Docente</dt><dd class="font-medium">{{ a.docente.full_name if a.docente else '—' }}</dd></div>
+    <div class="bg-slate-50 rounded-lg p-3"><dt class="text-slate-400">Créditos</dt><dd class="font-medium">{{ a.creditos }}</dd></div>
+    <div class="bg-slate-50 rounded-lg p-3"><dt class="text-slate-400">Cupos</dt><dd class="font-medium">{{ cupo.free }} / {{ a.cupo_max }}</dd></div>
+  </dl>
+</div>
+{% endblock %}

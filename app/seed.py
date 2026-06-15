@@ -1,0 +1,164 @@
+"""Idempotent demo seed: SIU legajos, staff/students, activities, FAQ, config."""
+from __future__ import annotations
+
+from datetime import datetime, timedelta, timezone
+
+from sqlalchemy.orm import Session
+
+from app.config import settings
+from app.models import (
+    Activity,
+    AppConfig,
+    Attendance,
+    ESTADO_PUBLICADA,
+    Enrollment,
+    ENROLL_INSCRIPTO,
+    Faq,
+    ROLE_COORDINACION,
+    ROLE_DIRECTOR,
+    ROLE_DOCENTE,
+    ROLE_ESTUDIANTE,
+    TIPO_PRESENCIAL,
+    TIPO_VIRTUAL,
+    User,
+    ValidLegajo,
+)
+from app.security import hash_password
+
+DEMO_PASSWORD = "habitar123"
+
+LEGAJOS = [
+    ("1001", "Ana Pérez"),
+    ("1002", "Bruno Díaz"),
+    ("1003", "Carla Gómez"),
+    ("1004", "Diego López"),
+    ("1005", "Elena Ruiz"),
+    ("1006", "Federico Sosa"),
+    ("1007", "Gabriela Núñez"),
+    ("1008", "Hernán Torres"),
+    ("2001", "Julián Fraga"),
+    ("2002", "Martín Groisman"),
+]
+
+
+def _now() -> datetime:
+    return datetime.now(timezone.utc)
+
+
+def _get_or_create_user(db: Session, email: str, **fields) -> User:
+    user = db.query(User).filter(User.email == email).first()
+    if user:
+        return user
+    user = User(email=email, pw_hash=hash_password(DEMO_PASSWORD), **fields)
+    db.add(user)
+    db.flush()
+    return user
+
+
+def seed_all(db: Session) -> None:
+    # --- SIU legajos (mock) ---
+    if db.query(ValidLegajo).count() == 0:
+        for legajo, nombre in LEGAJOS:
+            db.add(ValidLegajo(legajo=legajo, nombre=nombre))
+
+    # --- app config ---
+    if db.get(AppConfig, "required_credits") is None:
+        db.add(AppConfig(key="required_credits", value=str(settings.REQUIRED_CREDITS)))
+
+    # --- FAQ ---
+    if db.query(Faq).count() == 0:
+        db.add_all(
+            [
+                Faq(orden=1, pregunta="¿Cómo me inscribo en una actividad?",
+                    respuesta="Entrá a 'Actividades', abrí el detalle y tocá 'Inscribirme'. El sistema controla el cupo automáticamente."),
+                Faq(orden=2, pregunta="¿Cómo registro mi asistencia?",
+                    respuesta="En la actividad, el docente muestra un código QR. Abrí 'Registrar asistencia' y escaneá o ingresá el código de 6 dígitos."),
+                Faq(orden=3, pregunta="¿Cuántos créditos necesito para aprobar?",
+                    respuesta=f"Necesitás {settings.REQUIRED_CREDITS} créditos. Podés ver tu progreso en el inicio."),
+                Faq(orden=4, pregunta="¿Puedo darme de baja de una actividad?",
+                    respuesta="Sí, desde el detalle de la actividad podés liberar tu cupo si no vas a asistir."),
+            ]
+        )
+
+    # --- users ---
+    coord = _get_or_create_user(
+        db, "coordinacion@unsam.edu.ar", nombre="Laura", apellido="Rasia",
+        role=ROLE_COORDINACION, legajo=None,
+    )
+    docente = _get_or_create_user(
+        db, "docente@unsam.edu.ar", nombre="Pablo", apellido="Méndez",
+        role=ROLE_DOCENTE, legajo=None,
+    )
+    _get_or_create_user(
+        db, "director@unsam.edu.ar", nombre="Marcela", apellido="Vega",
+        role=ROLE_DIRECTOR, legajo=None,
+    )
+    ana = _get_or_create_user(
+        db, "ana@alumno.unsam.edu.ar", nombre="Ana", apellido="Pérez",
+        role=ROLE_ESTUDIANTE, legajo="1001", dni="40111222", carrera="Ing. en Computación",
+    )
+    bruno = _get_or_create_user(
+        db, "bruno@alumno.unsam.edu.ar", nombre="Bruno", apellido="Díaz",
+        role=ROLE_ESTUDIANTE, legajo="1002", dni="40333444", carrera="Lic. en Biotecnología",
+    )
+    db.flush()
+
+    # --- activities (only seed once) ---
+    if db.query(Activity).count() == 0:
+        now = _now()
+        acts = [
+            Activity(
+                titulo="Bienvenida al campus",
+                descripcion="Recorrido guiado por la ECyT y presentación del Módulo Habitar.",
+                tipo=TIPO_PRESENCIAL, fecha_inicio=now - timedelta(days=7),
+                fecha_fin=now - timedelta(days=7) + timedelta(hours=2),
+                lugar="Hall central - Campus Miguelete", docente_id=docente.id,
+                creditos=2, cupo_max=40, estado=ESTADO_PUBLICADA, created_by=coord.id,
+            ),
+            Activity(
+                titulo="Taller de hábitos de estudio",
+                descripcion="Estrategias para organizar el tiempo y estudiar en la universidad.",
+                tipo=TIPO_PRESENCIAL, fecha_inicio=now + timedelta(hours=24),
+                fecha_fin=now + timedelta(hours=26),
+                lugar="Aula 12 - Tornavía", docente_id=docente.id,
+                creditos=3, cupo_max=2, estado=ESTADO_PUBLICADA, created_by=coord.id,
+            ),
+            Activity(
+                titulo="Charla: vida universitaria",
+                descripcion="Egresados cuentan su experiencia y responden preguntas.",
+                tipo=TIPO_VIRTUAL, fecha_inicio=now + timedelta(days=5),
+                fecha_fin=now + timedelta(days=5) + timedelta(hours=1, minutes=30),
+                lugar="Zoom (link por mail)", docente_id=docente.id,
+                creditos=2, cupo_max=100, estado=ESTADO_PUBLICADA, created_by=coord.id,
+            ),
+            Activity(
+                titulo="Laboratorio abierto de Física",
+                descripcion="Experiencias prácticas en el laboratorio de física.",
+                tipo=TIPO_PRESENCIAL, fecha_inicio=now + timedelta(days=10),
+                fecha_fin=now + timedelta(days=10) + timedelta(hours=3),
+                lugar="Lab 3 - Pabellón de Física", docente_id=docente.id,
+                creditos=4, cupo_max=15, estado=ESTADO_PUBLICADA, created_by=coord.id,
+            ),
+            Activity(
+                titulo="Borrador: Taller de escritura",
+                descripcion="Pendiente de revisión, todavía sin publicar.",
+                tipo=TIPO_PRESENCIAL, fecha_inicio=now + timedelta(days=14),
+                fecha_fin=now + timedelta(days=14) + timedelta(hours=2),
+                lugar="Aula 5", docente_id=docente.id,
+                creditos=2, cupo_max=20, estado="borrador", created_by=coord.id,
+            ),
+        ]
+        db.add_all(acts)
+        db.flush()
+
+        bienvenida, taller, charla = acts[0], acts[1], acts[2]
+        # Ana attended the welcome (past) -> has credits, and is enrolled in upcoming ones.
+        db.add_all([
+            Enrollment(activity_id=bienvenida.id, user_id=ana.id, estado=ENROLL_INSCRIPTO),
+            Enrollment(activity_id=taller.id, user_id=ana.id, estado=ENROLL_INSCRIPTO),
+            Enrollment(activity_id=charla.id, user_id=ana.id, estado=ENROLL_INSCRIPTO),
+            Enrollment(activity_id=bienvenida.id, user_id=bruno.id, estado=ENROLL_INSCRIPTO),
+        ])
+        db.add(Attendance(activity_id=bienvenida.id, user_id=ana.id, validated_by=docente.id))
+
+    db.commit()
