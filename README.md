@@ -68,6 +68,8 @@ Al iniciar crea las tablas (`create_all`) y siembra datos demo de forma idempote
 > Plan free: el servicio hiberna tras inactividad (~30 s de arranque en frío).
 
 ## Arquitectura
+Estilos y patrones de diseño con referencias al código: [`docs/Arquitectura_y_Patrones.md`](docs/Arquitectura_y_Patrones.md).
+
 Capas jerárquicas: `routers/` (páginas Jinja + endpoints) → `services/` (dominio:
 identity, activities, enrollment, attendance, credits, analytics) → `models.py` (ORM) → Postgres.
 
