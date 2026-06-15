@@ -13,3 +13,5 @@ services:
         value: "10"
       - key: APP_NAME
         value: "Módulo Habitar"
+      - key: SESSION_HTTPS_ONLY
+        value: "1"   # Render serves HTTPS; send the session cookie only over TLS

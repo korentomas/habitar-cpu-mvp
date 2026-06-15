@@ -63,6 +63,7 @@ def enroll(db: Session, activity_id: int, user_id: int) -> Activity:
 
     if existing:
         existing.estado = ENROLL_INSCRIPTO
+        existing.reminded = False  # re-arm the 24h reminder after a baja/re-inscripción
     else:
         db.add(Enrollment(activity_id=activity_id, user_id=user_id, estado=ENROLL_INSCRIPTO))
     db.commit()

@@ -10,6 +10,8 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models import (
     Activity,
+    Enrollment,
+    ENROLL_INSCRIPTO,
     ESTADO_BORRADOR,
     ESTADO_CANCELADA,
     ESTADO_PUBLICADA,
@@ -31,6 +33,15 @@ ADMIN = require_roles("coordinacion")
 def _parse_dt(value: str) -> datetime:
     # datetime-local -> naive; store as UTC-aware (wall-clock kept for display).
     return datetime.fromisoformat(value).replace(tzinfo=timezone.utc)
+
+
+def _parse_dates(fecha_inicio: str, fecha_fin: str) -> tuple[datetime, datetime]:
+    """Parse both dates and validate order. Raises ValueError on malformed/invalid input."""
+    inicio = _parse_dt(fecha_inicio)
+    fin = _parse_dt(fecha_fin)
+    if fin < inicio:
+        raise ValueError("La fecha de fin es anterior al inicio.")
+    return inicio, fin
 
 
 def _docentes(db: Session) -> list[User]:
@@ -73,10 +84,14 @@ def crear(
     user: User = Depends(ADMIN),
     db: Session = Depends(get_db),
 ):
+    try:
+        inicio, fin = _parse_dates(fecha_inicio, fecha_fin)
+    except ValueError:
+        return RedirectResponse(url="/admin?err=Fechas inválidas: revisá inicio y fin.", status_code=303)
     activities_svc.create(
         db,
         titulo=titulo.strip(), descripcion=descripcion.strip(), tipo=tipo,
-        fecha_inicio=_parse_dt(fecha_inicio), fecha_fin=_parse_dt(fecha_fin),
+        fecha_inicio=inicio, fecha_fin=fin,
         lugar=lugar.strip(), docente_id=int(docente_id) if docente_id.isdigit() else None,
         creditos=creditos, cupo_max=cupo_max, estado=ESTADO_BORRADOR, created_by=user.id,
     )
@@ -113,14 +128,26 @@ def actualizar(
     a = activities_svc.get(db, activity_id)
     if a is None:
         return RedirectResponse(url="/admin?err=Actividad no encontrada.", status_code=303)
+    try:
+        inicio, fin = _parse_dates(fecha_inicio, fecha_fin)
+    except ValueError:
+        return RedirectResponse(url="/admin?err=Fechas inválidas: revisá inicio y fin.", status_code=303)
     was_published = a.estado == ESTADO_PUBLICADA
+    fecha_cambio = a.fecha_inicio != inicio
     activities_svc.update(
         db, a,
         titulo=titulo.strip(), descripcion=descripcion.strip(), tipo=tipo,
-        fecha_inicio=_parse_dt(fecha_inicio), fecha_fin=_parse_dt(fecha_fin),
+        fecha_inicio=inicio, fecha_fin=fin,
         lugar=lugar.strip(), docente_id=int(docente_id) if docente_id.isdigit() else None,
         creditos=creditos, cupo_max=cupo_max,
     )
+    if fecha_cambio:
+        # Cambió la fecha de inicio: re-armar el recordatorio de 24h de los inscriptos.
+        db.query(Enrollment).filter(
+            Enrollment.activity_id == activity_id,
+            Enrollment.estado == ENROLL_INSCRIPTO,
+        ).update({Enrollment.reminded: False})
+        db.commit()
     if was_published:
         # Best-effort notifications; the activity update is already committed.
         try:

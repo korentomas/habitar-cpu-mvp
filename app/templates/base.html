@@ -32,7 +32,7 @@
         Avisos
         {% if unread %}<span class="absolute -top-2 -right-3 bg-rose-500 text-xs rounded-full px-1.5">{{ unread }}</span>{% endif %}
       </a>
-      <span class="text-slate-400 text-sm">{{ user.full_name }}</span>
+      <a href="/perfil" class="text-slate-300 hover:text-white text-sm">{{ user.full_name }}</a>
       <a href="/logout" class="bg-slate-700 hover:bg-slate-600 px-3 py-1 rounded text-sm">Salir</a>
     </nav>
   </header>

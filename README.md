@@ -91,7 +91,12 @@ app/
 
 ## Notas de seguridad para producción
 - Contraseñas con **bcrypt**, sesiones en cookie firmada, acceso por rol.
+- `SECRET_KEY` débil/placeholder se rechaza (clave efímera + aviso); en Render se autogenera.
+- Cookie de sesión `Secure` en producción (`SESSION_HTTPS_ONLY=1` en `render.yaml`) y `SameSite=Lax`.
 - Cupo resuelto con `SELECT ... FOR UPDATE` (sin sobre-inscripción en carreras).
 - Asistencia auditable (`validated_by` + `validated_at`).
-- **Hardening pendiente:** compilar Tailwind (hoy CDN, solo dev) y agregar
-  `integrity`/SRI a los `<script>` de CDN (Chart.js, html5-qrcode).
+- **Hardening pendiente:** tokens anti-CSRF en los formularios POST (hoy solo `SameSite=Lax`);
+  política de zona horaria única (hoy las fechas se guardan como hora local etiquetada UTC, lo
+  que adelanta unas horas el recordatorio); `INSERT ... ON CONFLICT` en la importación de
+  legajos para no descartar el lote ante una colisión concurrente; compilar Tailwind (hoy CDN)
+  y agregar `integrity`/SRI a los `<script>` de CDN (Chart.js, html5-qrcode).

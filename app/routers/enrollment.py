@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
+from urllib.parse import quote
 
 from fastapi import APIRouter, Depends, Request
 from fastapi.responses import RedirectResponse
@@ -33,7 +34,7 @@ def inscribir(
     try:
         activity = enrollment_svc.enroll(db, activity_id, user.id)
     except enrollment_svc.EnrollError as exc:
-        return RedirectResponse(url=f"/actividades/{activity_id}?err={exc}", status_code=303)
+        return RedirectResponse(url=f"/actividades/{activity_id}?err={quote(str(exc))}", status_code=303)
     # Enrollment is already durably committed by enroll(); the confirmation
     # notification is best-effort and must not fail the (successful) inscription.
     try:
@@ -58,7 +59,7 @@ def baja(
     try:
         enrollment_svc.unenroll(db, activity_id, user.id)
     except enrollment_svc.EnrollError as exc:
-        return RedirectResponse(url=f"/actividades/{activity_id}?err={exc}", status_code=303)
+        return RedirectResponse(url=f"/actividades/{activity_id}?err={quote(str(exc))}", status_code=303)
     return RedirectResponse(url=f"/actividades/{activity_id}?msg=Te diste de baja. Liberaste tu cupo.", status_code=303)
 
 

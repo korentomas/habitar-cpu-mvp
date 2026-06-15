@@ -24,13 +24,16 @@ def send_reminders() -> None:
     db = SessionLocal()
     try:
         now = datetime.now(timezone.utc)
-        window_start = now + timedelta(hours=23)
-        window_end = now + timedelta(hours=25)
+        # Remind for any upcoming activity within the next ~24h that has not been
+        # reminded yet. Using `now` as the lower bound (instead of now+23h) makes the
+        # job self-healing: if the free-tier instance hibernated through the exact 24h
+        # mark, the reminder is still sent on the next run instead of being lost.
+        window_end = now + timedelta(hours=24)
         activities = (
             db.query(Activity)
             .filter(
                 Activity.estado == ESTADO_PUBLICADA,
-                Activity.fecha_inicio >= window_start,
+                Activity.fecha_inicio >= now,
                 Activity.fecha_inicio <= window_end,
             )
             .all()
@@ -72,6 +75,14 @@ def send_reminders() -> None:
 def start_scheduler() -> None:
     if scheduler.running:
         return
-    scheduler.add_job(send_reminders, "interval", hours=1, id="reminders", replace_existing=True)
+    scheduler.add_job(
+        send_reminders,
+        "interval",
+        hours=1,
+        id="reminders",
+        replace_existing=True,
+        coalesce=True,            # collapse missed runs (after hibernation) into one
+        misfire_grace_time=3600,  # still run a tick that fired late instead of skipping
+    )
     scheduler.start()
     logger.info("Reminder scheduler started")

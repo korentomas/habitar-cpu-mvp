@@ -4,6 +4,7 @@ from __future__ import annotations
 import base64
 import io
 from datetime import datetime, timezone
+from urllib.parse import quote
 
 import qrcode
 from fastapi import APIRouter, Depends, Form, Request
@@ -55,7 +56,7 @@ def checkin_submit(
     try:
         activity = attendance_svc.check_in(db, codigo, user.id)
     except attendance_svc.AttendanceError as exc:
-        return RedirectResponse(url=f"/checkin?err={exc}", status_code=303)
+        return RedirectResponse(url=f"/checkin?err={quote(str(exc))}", status_code=303)
     return RedirectResponse(
         url=f"/actividades/{activity.id}/encuesta?msg=¡Asistencia registrada! Sumaste {activity.creditos} créditos.",
         status_code=303,
@@ -196,5 +197,5 @@ def docente_mark(
     try:
         attendance_svc.mark_present_manual(db, activity_id, student_id, user.id)
     except attendance_svc.AttendanceError as exc:
-        return RedirectResponse(url=f"/docente/actividades/{activity_id}/asistencia?err={exc}", status_code=303)
+        return RedirectResponse(url=f"/docente/actividades/{activity_id}/asistencia?err={quote(str(exc))}", status_code=303)
     return RedirectResponse(url=f"/docente/actividades/{activity_id}/asistencia?msg=Asistencia registrada.", status_code=303)

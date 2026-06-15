@@ -7,24 +7,29 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Session cookies are signed with SECRET_KEY. Never fall back to a *known* value:
-# a published key lets anyone forge a session and impersonate any role. If the key
-# is missing or a known-insecure placeholder, generate a random ephemeral key
-# (secure, but sessions reset on restart / differ per worker) and warn loudly.
-_INSECURE_KEYS = {
-    "",
-    "dev-secret-change-me",
-    "change-me-to-a-long-random-string",
-    "change-me",
-}
+# Session cookies are signed with SECRET_KEY. Never sign with a weak/guessable value:
+# anyone who knows the key can forge a session and impersonate any role. We reject not
+# just exact placeholders but any low-entropy or placeholder-style key (too short, or
+# containing words like "change"/"secret"/"example"). A near-miss like
+# "dev-secret-change-me-7f3a..." must NOT pass. When rejected, fall back to a random
+# ephemeral key (secure, but sessions reset on restart / differ per worker) and warn.
+_WEAK_MARKERS = ("change", "secret", "placeholder", "example")
+
+
+def _is_weak_secret(raw: str) -> bool:
+    if len(raw) < 32:
+        return True
+    low = raw.lower()
+    return any(marker in low for marker in _WEAK_MARKERS)
 
 
 def _resolve_secret_key() -> str:
     raw = os.getenv("SECRET_KEY", "").strip()
-    if raw in _INSECURE_KEYS:
+    if _is_weak_secret(raw):
         logging.getLogger("habitar.config").warning(
-            "SECRET_KEY is unset or an insecure default; using a random ephemeral key. "
-            "Set a strong SECRET_KEY in the environment for stable, multi-worker sessions."
+            "SECRET_KEY is unset, too short, or a placeholder-style value; using a random "
+            "ephemeral key. Set a strong SECRET_KEY (e.g. `python -c \"import secrets; "
+            "print(secrets.token_urlsafe(32))\"`) for stable, multi-worker sessions."
         )
         return secrets.token_urlsafe(32)
     return raw
