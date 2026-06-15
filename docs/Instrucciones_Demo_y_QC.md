@@ -108,7 +108,8 @@ abajo y contrastando el resultado obtenido con el resultado esperado.
 
 Sobre la demo se ejecutan las pruebas funcionales de aceptación de cada historia de
 usuario, junto con las pruebas de seguridad de control de acceso por rol y la prueba de
-fiabilidad del cupo concurrente, que el whitepaper identifica como el escenario crítico. Las
+fiabilidad del control de cupo, que el whitepaper plantea para el escenario de dos
+inscripciones simultáneas por el último lugar. Las
 pruebas unitarias y de integración acompañan al código durante el desarrollo y no forman
 parte de este recorrido manual. La organización de los casos sigue la del plan
 de pruebas del whitepaper (sección 8.6).
@@ -121,7 +122,7 @@ confinado a las secciones que le corresponden.
 
 | Caso | Cómo reproducirlo | Resultado esperado |
 |---|---|---|
-| Alta válida | Registrarse con el legajo 1003 y datos completos | La cuenta se crea y el ingreso es automático |
+| Alta válida | Registrarse con el legajo 1003 y un email no utilizado antes | La cuenta se crea y el ingreso es automático |
 | Alta inválida | Registrarse con el legajo 9999 | El alta se rechaza con un mensaje de error y la cuenta no se crea |
 | Ingreso inválido | Ingresar con una contraseña incorrecta | Se informa que el email o la contraseña son incorrectos |
 | Control de acceso | Como estudiante, abrir una sección de administración | Se muestra la pantalla de acceso denegado |
@@ -144,7 +145,7 @@ duplicación.
 | Caso | Cómo reproducirlo | Resultado esperado |
 |---|---|---|
 | Inscripción | Inscribirse en una actividad con cupo disponible | Se confirma la inscripción y se genera la notificación |
-| Cupo completo | Inscribir un tercer estudiante en *Taller de hábitos de estudio* (cupo de dos) | La inscripción se rechaza por falta de cupo |
+| Cupo completo | Inscribir estudiantes en *Taller de hábitos de estudio* hasta agotar su cupo de dos lugares e intentar una inscripción más | La inscripción que excede el cupo se rechaza por falta de cupo |
 | Inscripción duplicada | Intentar inscribirse dos veces en la misma actividad | El sistema detecta el duplicado y lo rechaza |
 | Baja | Darse de baja de una actividad | Se libera el cupo y se informa la baja |
 
@@ -161,7 +162,9 @@ proceso en segundo plano, el recordatorio no es una acción inmediata de la insc
 
 **Épica 5, registro de asistencia.** Se prueba la acreditación presencial mediante el código
 que muestra el docente y los rechazos previstos ante un código vencido, un estudiante no
-inscripto o una segunda acreditación.
+inscripto o una segunda acreditación. Para reproducir estos casos con un solo dispositivo,
+conviene ingresar primero como docente para obtener el código y luego como el estudiante
+inscripto para acreditar la asistencia.
 
 | Caso | Cómo reproducirlo | Resultado esperado |
 |---|---|---|
