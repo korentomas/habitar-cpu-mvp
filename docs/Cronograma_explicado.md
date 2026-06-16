@@ -144,7 +144,59 @@ relleno: se consumen solo ante un riesgo.
 
 ---
 
-## 7. Resumen para la defensa
+## 7. Equivalencia en días y horas
+
+La consigna pedía una escala relativa (sprints, sin fechas calendario), por eso el
+cronograma se expresa en sprints. Cuando hace falta una magnitud en días, se deriva de los
+propios supuestos del whitepaper (sección 6.2), sin fijar fechas concretas.
+
+Supuestos de conversión:
+
+- Un sprint dura **2 semanas**, es decir **10 días hábiles**.
+- La capacidad del equipo es de **80 horas por sprint** (4 personas part-time, 10 horas por
+  semana cada una, durante 2 semanas).
+- La velocidad es de unos **20 SP por sprint**, de modo que **1 SP equivale a unas 4
+  horas-equipo**.
+- Una jornada-persona se cuenta como 8 horas.
+
+### Duración total del proyecto
+
+El cronograma abarca de S0 a S9, es decir **10 sprints**. En tiempo calendario:
+
+> **10 sprints × 2 semanas = 20 semanas ≈ 5 meses ≈ 100 días hábiles.**
+
+Esta es la duración mínima que marca el camino crítico, porque sus épicas ocupan sprints
+consecutivos de principio a fin (de S0 a S9).
+
+### Esfuerzo total
+
+> **≈ 628 horas-equipo ≈ 78,5 días-persona** (a 8 horas por jornada).
+
+El esfuerzo (628 horas) y la duración (20 semanas) son cosas distintas: el equipo es
+part-time, así que las 628 horas de trabajo se reparten a lo largo de las 20 semanas
+calendario, no se hacen de corrido.
+
+### Esfuerzo por épica
+
+| Épica | SP | Horas (SP × 4) | Días-persona (horas / 8) |
+|---|---|---|---|
+| E1 Autenticación y perfil | 14 | 56 | 7,0 |
+| E8 Gestión de actividades | 12 | 48 | 6,0 |
+| E2 Descubrimiento | 26 | 104 | 13,0 |
+| E3 Inscripción | 9 | 36 | 4,5 |
+| E5 Registro de asistencia | 31 | 124 | 15,5 |
+| E7 Progreso | 8 | 32 | 4,0 |
+| E9 Inscriptos y asistencia (admin) | 10 | 40 | 5,0 |
+| E4 Recordatorios (incluye FAQ) | 11 | 44 | 5,5 |
+| E6 Encuesta | 10 | 40 | 5,0 |
+| E10 Analítica | 18 | 72 | 9,0 |
+| **Subtotal desarrollo** | **149** | **596** | **74,5** |
+| Setup, hardening y reservas | n/a | ~32 | ~4,0 |
+| **Total** | n/a | **~628** | **~78,5** |
+
+---
+
+## 8. Resumen para la defensa
 
 - El camino crítico es Setup, E1, E8, E2, E3, E5, E7, Hardening: la cadena de dependencias
   más larga, que define la duración mínima del proyecto.
