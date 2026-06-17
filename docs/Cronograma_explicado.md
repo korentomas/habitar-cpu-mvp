@@ -32,7 +32,7 @@ camino crítico es, entonces, la cadena de dependencias cuya suma de SP es la m�
 | **E5 Registro de asistencia** | **31** | E3, E8 | Se acredita asistencia sobre una inscripción a una actividad |
 | E7 Progreso del estudiante | 8 | E5 | Los créditos se suman después de validar la asistencia |
 | E9 Inscriptos y asistencia (admin) | 10 | E3 | Hace falta que existan inscriptos |
-| E4 Recordatorios | 8 | E3 | Solo recuerda inscripciones confirmadas |
+| E4 Recordatorios (incluye FAQ) | 11 | E3 | Recuerda inscripciones confirmadas; la FAQ (US15) es independiente y se adelanta a S2 |
 | E6 Encuesta | 10 | E5 | Aparece después de confirmar la asistencia |
 | E10 Analítica | 18 | E5, E9, E6 | Consume datos de asistencia, inscriptos y encuestas |
 
