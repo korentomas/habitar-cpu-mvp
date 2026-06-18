@@ -27,17 +27,14 @@ Total aprox 16 min + preguntas.
 Presentación del equipo, hook concreto, hoja de ruta.
 
 - "Hola, somos el grupo 10: Fraga, Groisman, Korenblit y Velizán."
-- Hook (el número que duele): "Cada año entran alrededor de 150 estudiantes al CPU de la ECyT.
-  Para aprobar el Módulo Habitar tienen que completar 10 horas de actividades de introducción a
-  la vida universitaria. Hoy cada uno lleva una hoja de papel para juntar las firmas, la
-  coordinación las procesa a mano, y no queda ningún registro limpio ni datos para analizar."
-- Remate: "Creemos que ni los estudiantes ni la coordinación deberían pelear con papeles para
-  algo tan simple. Eso es lo que vinimos a resolver."
+- Hook (la foto del proceso, sin cifras): "Todos los años, los ingresantes del CPU de la ECyT
+  tienen que completar 10 horas de actividades para aprobar el Módulo Habitar. Hoy cada uno
+  lleva una hoja de papel para juntar las firmas y la coordinación las procesa a mano."
+- Remate (el costo + la tesis): "Es un proceso lento, sin respaldo, y que desperdicia datos que
+  ya existen. Lo reemplazamos por una sola plataforma web."
 - Hoja de ruta: "Les mostramos el problema, la propuesta, la arquitectura, los riesgos, cómo lo
-  planificamos, y al final una demo de la app funcionando en vivo."
+  planificamos, y al final una demo en vivo."
 - Transición: "Empecemos por cómo se gestiona hoy."
-
-(Confirmar el número exacto de ingresantes; la slide dice alrededor de 150.)
 
 ---
 
