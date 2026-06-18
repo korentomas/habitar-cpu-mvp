@@ -1,158 +1,158 @@
-# Guion de la presentación, Grupo 10
+# Guion de presentación, Grupo 10
 
-**Plataforma de Gestión del Módulo Habitar (CPU - UNSAM).**
+Plataforma de Gestión del Módulo Habitar (CPU - UNSAM).
 
-Bullets para tener a la vista mientras se presenta (no leer textual). 14 slides, 4 segmentos
-y la demo en vivo.
+## Cómo usar este guion
+- No es para leer palabra por palabra. Son disparadores: la idea de cada slide y cómo arrancarla.
+- Hablás vos, la slide es el apoyo visual. Si te ponés a leer la slide, perdés a la platea.
+- Lo que está entre comillas es una forma sugerida de decirlo, no un libreto. Decilo con tus palabras.
+- Ensayalo 2 o 3 veces hasta que te salga solo.
 
-| Segmento | Slides | Presenta |
-|---|---|---|
-| Contexto y problema | 1-6 | Marce |
-| Propuesta de solución | 7-9 | Juli |
-| Arquitectura y riesgos | 10-11 | Martin |
-| Metodología, cronograma y conclusiones | 12-14 | Tomás |
-| Demo en vivo (cierre) | después de la 14 | Tomás |
+## Reparto y tiempo (ajustar al límite que den)
+| Parte | Slides | Quién | Tiempo aprox |
+|---|---|---|---|
+| Apertura | 1 | Marce | 30 s |
+| Contexto y problema | 2-6 | Marce | 3 min |
+| Propuesta de solución | 7-9 | Juli | 3 min |
+| Arquitectura y riesgos | 10-11 | Martin | 3 min |
+| Metodología, cronograma, conclusiones | 12-14 | Tomás | 3 min |
+| Demo en vivo (cierre) | despues de la 14 | Tomás | 4 min |
 
-La demo va al final, como cierre, después de las conclusiones.
-
----
-
-## Segmento 1, contexto y problema (1-6), Marce
-
-**Slide 1, título**
-- Plataforma de Gestión del Módulo Habitar, Grupo 10.
-- En una línea: el Módulo Habitar es la materia de ingreso del CPU donde los ingresantes
-  hacen actividades presenciales y virtuales para sumar 10 créditos antes de empezar la carrera.
-
-**Slides 2-3, sistema actual**
-- Hoy se gestiona con foro del campus + Google Forms + planillas de papel.
-- El alumno busca actividades en un documento, se anota por formularios distintos, confirma por mail.
-- La info queda desperdigada en múltiples canales.
-
-**Slide 4, problemas (consultas y cupos)**
-- Consultas repetidas por mail y foro (cuántas horas, cómo acreditar, estado de inscripción).
-- Cupos no visibles: el alumno no sabe si quedan lugares hasta que le dicen "completo".
-
-**Slide 5, problemas (papel)**
-- Alrededor de 150 ingresantes por año.
-- Cada uno sube fotos de su planilla firmada; una persona verifica las firmas una por una.
-- Lento, artesanal y sin respaldo: si se pierde la foto, no hay backup.
-
-**Slide 6, problemas (sheets)**
-- Cada actividad tiene su planilla de Sheets; la info queda dispersa en muchos archivos.
-- Consolidar para sacar estadísticas es trabajo manual. Datos que ya existen, desaprovechados.
-
-**Cierre del segmento:** proceso manual que crece con cada camada, sin backup ni datos
-explotables. Eso motiva la solución.
+Total aprox 16 min + preguntas.
 
 ---
 
-## Segmento 2, propuesta de solución (7-9), Juli
+## Apertura (Marce, slide 1)
 
-**Slide 7, web app (estudiantes), Juli**
-- Una web app central para estudiantes y coordinación.
-- Para el estudiante: tablero de avisos, FAQs, progreso personal, calendario, búsqueda de
-  actividades, visibilidad de cupos y créditos otorgados.
-- Mostrar los screenshots de la slide; la demo en vivo va al final.
+Hook concreto, después el equipo y la hoja de ruta.
 
-**Slide 8, web app (administración), Juli**
-- Para la administración: ABM de actividades, edición de FAQs, envío de avisos, ver
-  inscriptos, tableros de analítica.
-
-**Slide 9, impacto esperado, Juli**
-- FAQs bajan las consultas repetitivas por mail.
-- Inscripción central reemplaza la multiplicidad de Google Forms.
-- Dashboards aportan valor sobre datos que hoy no se explotan.
-- Calendario personal facilita la cursada y descongestiona consultas.
+- Arrancá con el número que duele: "Cada año entran cerca de 150 estudiantes al CPU, y para
+  aprobar tienen que juntar 10 horas de actividades. Hoy todo eso se lleva en papel y en
+  planillas sueltas."
+- "Somos el Grupo 10. Hicimos una plataforma web para reemplazar ese proceso."
+- Hoja de ruta corta: "Les muestro el problema, la propuesta, la arquitectura, los riesgos,
+  cómo lo planificamos, y al final una demo de la app funcionando en vivo."
+- Transición: "Empecemos por cómo se gestiona hoy."
 
 ---
 
-## Segmento 3, arquitectura y riesgos (10-11), Martin
+## Contexto y problema (Marce, slides 2-6)
 
-**Slide 10, arquitectura**
-- Capas jerárquicas clásicas (es una web app): cliente, servidor web, backend (módulos de
-  dominio), base de datos.
-- 2 paneles (portal del estudiante y backoffice) pero 4 perfiles de permiso (estudiante,
-  coordinación, docente, director): servicios compartidos, distintos permisos por rol.
-- Estilo distribuido pub/sub para las notificaciones (cada actividad es un topic, la
-  inscripción suscribe al alumno).
-- Single event processing: cada acción del usuario (ej. inscribirse) es una cadena de
-  eventos únicos encadenados.
-- Una DB interna + consulta al SIU Guaraní solo para verificar la matrícula al alta (no SSO).
-- Heads-up por si preguntan: tener a mano "2 paneles, 4 perfiles" y el pub/sub.
+**Slides 2-3, sistema actual.** Idea: hoy es todo manual y disperso.
+- "El alumno busca las actividades en un documento, se anota por un Google Form distinto para
+  cada una, y avisa su asistencia por otro formulario o por mail."
+- Transición: "Esto trae tres problemas concretos."
 
-**Slide 11, riesgos**
-- Matriz probabilidad por impacto: 6 riesgos, 5 significativos y 1 moderado.
-- SIU (significativo): mitigar con un simulador + acceso de emergencia.
-- Archivos corruptos en la importación (significativo): validadores estrictos + rollback transaccional.
-- QR truchado / falla de presencialidad (significativo): QR rotativo con expiración + geoloc o
-  wifi UNSAM + registro manual de contingencia.
-- Defectos críticos tardíos en UAT (significativo): MVP-first + integración continua para que
-  no aparezcan recién al final.
-- Dashboard no útil para directivos (moderado, observar): validar mockups con los directivos
-  antes de programar. Es el único "observar", no "mitigar".
-- Incompatibilidad de capas (significativo): integrar de a piezas chicas, no dejar el ensamblado para el final.
+**Slide 4, consultas y cupos.** Idea: la coordinación se satura y el alumno no ve nada.
+- "A la coordinación le entra la misma pregunta mil veces: cuántas horas tengo, cómo acredito."
+- "Y el alumno no ve los cupos: se entera de que está lleno cuando le dicen que no entra."
+
+**Slide 5, asistencia en papel.** Idea: no escala y no hay respaldo.
+- "Cada uno sube fotos de una planilla firmada, y una persona verifica las firmas una por una."
+- "Si se pierde la foto, no hay backup. Son 150 por año."
+
+**Slide 6, datos desperdigados.** Idea: los datos existen pero no se pueden usar.
+- "Cada actividad tiene su propia planilla de Sheets. Sacar una estadística simple es trabajo a mano."
+- Handoff: "Con esto sobre la mesa, Juli les muestra qué proponemos." (pasás a Juli)
 
 ---
 
-## Segmento 4, metodología, cronograma y conclusiones (12-14), Tomás
+## Propuesta de solución (Juli, slides 7-9)
 
-**Slide 12, metodología**
-- Scrumban: Scrum (sprints, revisiones, reuniones) + Kanban (flujo visual, control de WIP).
-- En cada sprint, ciclo Spec-Driven Development (SDD): Specify, Plan, Tasks, Implement.
-- (Opcional: el agente de código implementa en un loop con verificación humana del 100% de lo
-  que entra a main.)
+**Slide 7, lado estudiante.** Idea: una sola plataforma central.
+- "En vez de mil canales, una sola web app. El estudiante ve su progreso, busca actividades,
+  se inscribe con un click y ve los cupos en tiempo real."
+- (Mostrá los screenshots de la slide. La demo en vivo va al final.)
 
-**Slide 13, cronograma**
-- Proceso: US Mapping, agrupar en épicas, Planning Poker para estimar story points.
-- Conversión de SP a horas con fundamento: 80 hs por sprint (4 personas x 10 hs/sem x 2 sem) /
-  ~20 SP por sprint = 4 hs por SP. Total ≈ 628 hs.
-- Camino crítico (cadena de mayor duración, define la duración mínima): Setup, Auth, CRUD
-  actividades, Descubrimiento, Inscripción, Asistencia, Progreso, Hardening.
-- E5 Asistencia es la épica dominante (ocupa 2 sprints) y la de mayor riesgo (SIU +
-  concurrencia), por eso lleva reserva de contingencia.
-- Holgura: las épicas fuera del camino crítico (recordatorios, encuesta, analítica) se
-  solapan sin mover el go-live.
-- Unidad correcta: SPRINTS (1 sprint = 2 semanas), no semanas. 10 sprints = 20 semanas.
+**Slide 8, lado administración.** Idea: la coordinación gestiona todo desde un lugar.
+- "La coordinación carga actividades, ve quién está inscripto, exporta los listados, y tiene
+  tableros con datos que antes no existían."
 
-**Slide 14, conclusiones**
-- Beneficios en tres sectores: coordinación (menos horas de gestión y consultas), dirección
-  (decisiones basadas en evidencia), estudiantes (info centralizada, cupos visibles,
-  recordatorios y asistencia con respaldo digital y trazable).
-- Cierre fuerte: el MVP está desplegado y funcionando, lo acaban de ver en la demo.
+**Slide 9, impacto.** Idea: tres cambios concretos.
+- "Menos consultas por mail, una sola vía de inscripción en lugar de mil forms, y datos para decidir."
+- Handoff: "Cómo está hecha por dentro lo cuenta Martin."
 
 ---
 
-## Cierre: demo en vivo (Tomás)
+## Arquitectura y riesgos (Martin, slides 10-11)
 
-Va al final, después de las conclusiones, como cierre fuerte: "y ahora se los muestro funcionando".
+**Slide 10, arquitectura.** Idea: capas clásicas de web app.
+- Recorré el diagrama de izquierda a derecha: "Cliente, front, back con módulos por dominio,
+  y la base de datos."
+- "Hay dos paneles, el del estudiante y el de la administración, pero cuatro perfiles de
+  permiso: estudiante, coordinación, docente y director."
+- "La identidad se verifica contra el SIU solo al darse de alta; después las credenciales
+  viven en nuestra base."
+- Si preguntan: tené a mano que es pub/sub para las notificaciones y lo de 2 paneles / 4 perfiles.
 
-**Antes de empezar (clave):**
-- Calentar Render 1-2 min antes (el plan free hiberna, primer load 30-50s) y dejar la sesión logueada.
-- Tener 2 ventanas abiertas: una de estudiante, una de docente (para el QR).
-- Video de backup abierto en otra pestaña por si falla el wifi o Render.
-- Cuentas (pw `habitar123`): ana@alumno.unsam.edu.ar, coordinacion@unsam.edu.ar, docente@unsam.edu.ar.
-
-**Parte estudiante (login ana):**
-- Inicio: barra de progreso 0/10 créditos y sección "Mis próximas actividades".
-- Actividades: aplicar filtros (tipo, fecha, créditos, con cupo). Abrir el detalle de una.
-- Inscribirse con un click, mostrar la confirmación.
-- Registrar asistencia: pasar a la ventana del docente, mostrar el código de 6 dígitos que rota
-  cada 90s; volver a la ventana del estudiante, ingresar el código, "asistencia registrada, sumaste créditos".
-- Completar la encuesta de satisfacción.
-- Volver al inicio: el progreso y los créditos se actualizaron.
-
-**Parte admin (login coordinación):**
-- Panel: resumen en tarjetas (publicadas, borradores, inscripciones).
-- Crear una actividad, usar la vista previa, publicarla.
-- Ver inscriptos y exportar la nómina a CSV o Excel.
-- Analítica: gráficos de inscriptos vs asistencias, actividades más elegidas, tasa de asistencia.
-
-**Cierre:** todo esto está desplegado y funcionando, no es un mockup.
+**Slide 11, riesgos.** Idea: identificamos 6, casi todos técnicos, y cada uno con su plan.
+- No leas los 6. Contá los 2 más importantes:
+- "El más fuerte es el SIU: si se cae, no podés dar de alta. Lo cubrimos con un simulador y un
+  acceso de emergencia."
+- "El de presencialidad, que truchen el QR, lo cubrimos con un QR que rota cada 90 segundos."
+- "El resto está en la matriz, con su probabilidad e impacto."
+- Handoff: "Cómo lo planificamos y en cuánto tiempo, Tomás."
 
 ---
 
-## Recordatorios para todos
-- Cronograma: hablar en sprints, no en semanas (1 sprint = 2 semanas, total 628 hs en el whitepaper).
-- Arquitectura: si preguntan por perfiles, son 2 paneles y 4 roles.
-- Demo: calentar Render antes y tener el video de backup.
+## Metodología, cronograma y conclusiones (Tomás, slides 12-14)
+
+**Slide 12, metodología.** Idea: Scrumban + un ciclo por sprint.
+- "Trabajamos en Scrumban: sprints y tablero Kanban."
+- "Dentro de cada sprint usamos un ciclo de spec-driven development: primero la especificación,
+  después el plan técnico, las tareas, y recién ahí implementamos."
+
+**Slide 13, cronograma.** Idea: lo estimamos y tiene un camino crítico claro.
+- "Partimos del user story mapping, agrupamos en épicas y estimamos con Planning Poker en
+  story points."
+- "Los pasamos a horas con la capacidad del equipo: da unas 628 horas, repartidas en 10 sprints."
+- Señalá la cadena: "Este es el camino crítico. La épica más pesada es Asistencia, que se lleva
+  dos sprints, y es también la de más riesgo por el SIU y la concurrencia."
+- Importante: hablá en sprints, no en semanas (1 sprint = 2 semanas).
+
+**Slide 14, conclusiones.** Idea: a quién le sirve.
+- "Le sirve a los tres: a la coordinación le baja horas de gestión, a la dirección le da datos
+  para decidir, y al estudiante le da todo centralizado y un registro de asistencia con respaldo."
+- Transición a la demo: "Y para cerrar, se los muestro funcionando."
+
+---
+
+## Demo en vivo (Tomás, cierre)
+
+Cierre fuerte: "esto no es un mockup, está desplegado y andando".
+
+**Antes de empezar (no saltear):**
+- Calentar Render 1 o 2 min antes (el plan gratis hiberna, primer carga 30-50 s) y dejar la sesión abierta.
+- Dos ventanas listas: una de estudiante, una de docente (para el QR).
+- Video de backup abierto en otra pestaña por si falla el wifi.
+- Cuentas (contraseña `habitar123`): ana@alumno.unsam.edu.ar, coordinacion@unsam.edu.ar, docente@unsam.edu.ar.
+
+**Estudiante (login ana):**
+- Inicio: barra de progreso 0/10 y "Mis próximas actividades".
+- Actividades: filtrar por tipo, fecha, créditos, cupo. Abrir el detalle.
+- Inscribirse con un click.
+- Asistencia: en la otra ventana, el docente muestra el código de 6 dígitos; volvés a la del
+  alumno, lo ingresás, y suma los créditos.
+- Encuesta rápida y vuelta al inicio: el progreso se actualizó.
+
+**Administración (login coordinación):**
+- Panel con el resumen, crear una actividad, vista previa, publicar.
+- Ver inscriptos y exportar a CSV o Excel.
+- Analítica: el gráfico de inscriptos contra asistencias y la tasa de asistencia.
+
+---
+
+## Preguntas que pueden caer (respuestas cortas)
+
+- *El cronograma va en semanas o en sprints?* En sprints. 1 sprint = 2 semanas, total 628 horas, está en el whitepaper.
+- *Dijeron 2 perfiles pero hay 4.* Son 2 paneles (portal y backoffice) y 4 perfiles de permiso. Los 4 salen de las historias (US-04 director, US-16 docente).
+- *Cómo funciona el acceso de emergencia del SIU?* El alta queda pendiente de verificación y se confirma cuando el SIU vuelve, o la coordinación la aprueba a mano mientras tanto.
+- *Para qué la carga de archivos?* Para migrar e integrar los listados que hoy viven en planillas, no para validar horas.
+- *Qué es el riesgo de defectos en UAT?* Que un bug grave aparezca recién en las pruebas del final y no quede tiempo de arreglarlo. Por eso desarrollamos primero lo esencial e integramos continuo.
+- *Por qué pub/sub?* Para desacoplar las notificaciones: el que publica un cambio no necesita conocer a cada inscripto.
+
+## Reglas de oro
+- No leer la slide. La slide es apoyo.
+- Hablar en sprints, no en semanas.
+- Calentar Render antes de la demo y tener el video de backup.
+- Pausas, mirar al público, no correr.
