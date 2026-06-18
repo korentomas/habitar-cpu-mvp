@@ -8,9 +8,12 @@ y la demo en vivo.
 | Segmento | Slides | Presenta |
 |---|---|---|
 | Contexto y problema | 1-6 | Marce |
-| Propuesta de solución + demo | 7-9 | Juli (narra) + Tomás (demo en vivo) |
+| Propuesta de solución | 7-9 | Juli |
 | Arquitectura y riesgos | 10-11 | Martin |
 | Metodología, cronograma y conclusiones | 12-14 | Tomás |
+| Demo en vivo (cierre) | después de la 14 | Tomás |
+
+La demo va al final, como cierre, después de las conclusiones.
 
 ---
 
@@ -44,49 +47,23 @@ explotables. Eso motiva la solución.
 
 ---
 
-## Segmento 2, propuesta de solución + demo (7-9), Juli narra + Tomás demo
+## Segmento 2, propuesta de solución (7-9), Juli
 
 **Slide 7, web app (estudiantes), Juli**
 - Una web app central para estudiantes y coordinación.
 - Para el estudiante: tablero de avisos, FAQs, progreso personal, calendario, búsqueda de
   actividades, visibilidad de cupos y créditos otorgados.
-- (Acá arranca la demo en vivo, parte estudiante.)
+- Mostrar los screenshots de la slide; la demo en vivo va al final.
 
 **Slide 8, web app (administración), Juli**
 - Para la administración: ABM de actividades, edición de FAQs, envío de avisos, ver
   inscriptos, tableros de analítica.
-- (Demo en vivo, parte admin.)
 
 **Slide 9, impacto esperado, Juli**
 - FAQs bajan las consultas repetitivas por mail.
 - Inscripción central reemplaza la multiplicidad de Google Forms.
 - Dashboards aportan valor sobre datos que hoy no se explotan.
 - Calendario personal facilita la cursada y descongestiona consultas.
-
-### Demo en vivo, Tomás (guion click a click)
-
-**Antes de empezar (clave):**
-- Calentar Render 1-2 min antes (el plan free hiberna, primer load 30-50s) y dejar la sesión logueada.
-- Tener 2 ventanas abiertas: una de estudiante, una de docente (para el QR).
-- Video de backup abierto en otra pestaña por si falla el wifi o Render.
-- Cuentas (pw `habitar123`): ana@alumno.unsam.edu.ar, coordinacion@unsam.edu.ar, docente@unsam.edu.ar.
-
-**Parte estudiante (login ana):**
-- Inicio: barra de progreso 0/10 créditos y sección "Mis próximas actividades".
-- Actividades: aplicar filtros (tipo, fecha, créditos, con cupo). Abrir el detalle de una.
-- Inscribirse con un click, mostrar la confirmación.
-- Registrar asistencia: pasar a la ventana del docente, mostrar el código de 6 dígitos que rota
-  cada 90s; volver a la ventana del estudiante, ingresar el código, "asistencia registrada, sumaste créditos".
-- Completar la encuesta de satisfacción.
-- Volver al inicio: el progreso y los créditos se actualizaron.
-
-**Parte admin (login coordinación):**
-- Panel: resumen en tarjetas (publicadas, borradores, inscripciones).
-- Crear una actividad, usar la vista previa, publicarla.
-- Ver inscriptos y exportar la nómina a CSV o Excel.
-- Analítica: gráficos de inscriptos vs asistencias, actividades más elegidas, tasa de asistencia.
-
-**Cierre de la demo:** todo esto está desplegado y funcionando, no es un mockup.
 
 ---
 
@@ -143,6 +120,35 @@ explotables. Eso motiva la solución.
   (decisiones basadas en evidencia), estudiantes (info centralizada, cupos visibles,
   recordatorios y asistencia con respaldo digital y trazable).
 - Cierre fuerte: el MVP está desplegado y funcionando, lo acaban de ver en la demo.
+
+---
+
+## Cierre: demo en vivo (Tomás)
+
+Va al final, después de las conclusiones, como cierre fuerte: "y ahora se los muestro funcionando".
+
+**Antes de empezar (clave):**
+- Calentar Render 1-2 min antes (el plan free hiberna, primer load 30-50s) y dejar la sesión logueada.
+- Tener 2 ventanas abiertas: una de estudiante, una de docente (para el QR).
+- Video de backup abierto en otra pestaña por si falla el wifi o Render.
+- Cuentas (pw `habitar123`): ana@alumno.unsam.edu.ar, coordinacion@unsam.edu.ar, docente@unsam.edu.ar.
+
+**Parte estudiante (login ana):**
+- Inicio: barra de progreso 0/10 créditos y sección "Mis próximas actividades".
+- Actividades: aplicar filtros (tipo, fecha, créditos, con cupo). Abrir el detalle de una.
+- Inscribirse con un click, mostrar la confirmación.
+- Registrar asistencia: pasar a la ventana del docente, mostrar el código de 6 dígitos que rota
+  cada 90s; volver a la ventana del estudiante, ingresar el código, "asistencia registrada, sumaste créditos".
+- Completar la encuesta de satisfacción.
+- Volver al inicio: el progreso y los créditos se actualizaron.
+
+**Parte admin (login coordinación):**
+- Panel: resumen en tarjetas (publicadas, borradores, inscripciones).
+- Crear una actividad, usar la vista previa, publicarla.
+- Ver inscriptos y exportar la nómina a CSV o Excel.
+- Analítica: gráficos de inscriptos vs asistencias, actividades más elegidas, tasa de asistencia.
+
+**Cierre:** todo esto está desplegado y funcionando, no es un mockup.
 
 ---
 
